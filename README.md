@@ -13,26 +13,29 @@ Resy-Bot leverages Resy's API endpoints to make automated reservation calls righ
 ## Features
 
 ### Backend
-- 🤖 **Automated Reservations** - Book tables the moment they become available
-- 🔍 **Venue Search** - Look up restaurant details by venue ID
-- ⏰ **Timed Execution** - Schedule reservation attempts for specific drop times
-- 💻 **Interactive CLI** - Beautiful console interface with guided prompts
-- 🌐 **REST API** - Flask server for web interface integration
-- 🤖 **AI Insights** - Google Gemini-powered reservation recommendations
+
+- **Automated Reservations** - Book tables the moment they become available
+- **Venue Search** - Look up restaurant details by venue ID
+- **Timed Execution** - Schedule reservation attempts for specific drop times
+- **Interactive CLI** - Beautiful console interface with guided prompts
+- **REST API** - Flask server for web interface integration
+- **AI Insights** - Google Gemini-powered reservation recommendations
 
 ### Frontend
-- 🎨 **Resy-Themed Design** - Professional red color scheme matching Resy's brand
-- 📱 **Responsive Layout** - Works on desktop, tablet, and mobile
-- 🔍 **Restaurant Search** - Search and view detailed venue information
-- 📅 **Reservation Management** - Create and configure automated reservations
-- ✨ **AI-Powered Insights** - Get intelligent reservation tips and recommendations
-- 📸 **Restaurant Photos** - View high-quality venue images
-- 🔥 **Firebase Caching** - Fast loading with persistent data storage
-- 🗺️ **Social Links** - Quick access to Google Maps, Resy, and Beli (coming soon)
+
+- **Resy-Themed Design** - Professional red color scheme matching Resy's brand
+- **Responsive Layout** - Works on desktop, tablet, and mobile
+- **Restaurant Search** - Search and view detailed venue information
+- **Reservation Management** - Create and configure automated reservations
+- **AI-Powered Insights** - Get intelligent reservation tips and recommendations
+- **Restaurant Photos** - View high-quality venue images
+- **Firebase Caching** - Fast loading with persistent data storage
+- **Social Links** - Quick access to Google Maps, Resy, and Beli (coming soon)
 
 ## Tech Stack
 
 ### Backend
+
 - **Python 3.x** - Core language
 - **Flask** - REST API framework
 - **Pydantic** - Request/response serialization
@@ -42,6 +45,7 @@ Resy-Bot leverages Resy's API endpoints to make automated reservation calls righ
 - **Google Generative AI** - AI-powered insights
 
 ### Frontend
+
 - **React 19** - Modern React with the compiler
 - **TypeScript** - Type-safe development
 - **Vite** - Fast build tool and dev server
@@ -62,16 +66,19 @@ Resy-Bot leverages Resy's API endpoints to make automated reservation calls righ
 ### Backend Setup
 
 1. Navigate to the backend directory:
+
 ```bash
 cd backend
 ```
 
 2. Run the setup script (recommended):
+
 ```bash
 ./setup.sh
 ```
 
 Or set up manually:
+
 ```bash
 # Create virtual environment
 python3 -m venv venv
@@ -84,6 +91,7 @@ pip install -r requirements.txt
 ```
 
 3. Create a `credentials.json` file:
+
 ```json
 {
   "api_key": "<api-key>",
@@ -95,11 +103,13 @@ pip install -r requirements.txt
 ```
 
 4. Set up environment variables in `.env`:
+
 ```bash
 GEMINI_API_KEY=your_gemini_api_key_here
 ```
 
 5. Start the Flask server:
+
 ```bash
 ./start_server.sh
 ```
@@ -109,16 +119,19 @@ The API will be available at `http://localhost:3001`
 ### Frontend Setup
 
 1. Navigate to the frontend directory:
+
 ```bash
 cd frontend
 ```
 
 2. Install dependencies:
+
 ```bash
 npm install
 ```
 
 3. Start the development server:
+
 ```bash
 npm run dev
 ```
@@ -162,6 +175,7 @@ For automated timed reservations, create a JSON file with this structure:
 ```
 
 **Field Descriptions:**
+
 - `party_size` - Number of guests
 - `venue_id` - Restaurant ID (found in Network tab, `/2/config` endpoint URL params)
 - `window_hours` - Hours before/after ideal time to search
@@ -177,6 +191,7 @@ For automated timed reservations, create a JSON file with this structure:
 ### Firebase Configuration
 
 Firebase is pre-configured in the frontend. The Realtime Database caches:
+
 - AI-powered reservation insights
 - Restaurant photos
 - Social links (Google Maps, Resy, Beli)
@@ -190,12 +205,14 @@ Data persists across sessions and users, reducing API calls and improving load t
 #### Interactive Mode (Recommended)
 
 Run the interactive console UI:
+
 ```bash
 cd backend
 python main.py
 ```
 
 Features:
+
 - 🔍 Search for restaurant info by venue ID
 - 📅 Make reservations with guided prompts
 - Easy navigation with arrow keys and Enter
@@ -203,11 +220,13 @@ Features:
 #### File-Based Mode
 
 Run with a reservation config file:
+
 ```bash
 python main.py -r reservation.json
 ```
 
 With custom credentials:
+
 ```bash
 python main.py -c custom_credentials.json -r reservation.json
 ```
@@ -217,11 +236,13 @@ The application waits until the specified drop time to begin searching and autom
 #### API Server
 
 Start the Flask server:
+
 ```bash
 ./start_server.sh
 ```
 
 **Available Endpoints:**
+
 - `GET /api/search?query={venue_name}` - Search for restaurants
 - `GET /api/venue/{venue_id}` - Get venue details
 - `POST /api/gemini-search` - Get AI-powered insights
@@ -232,6 +253,7 @@ Start the Flask server:
 #### Help
 
 View all CLI options:
+
 ```bash
 python main.py --help
 ```
@@ -243,6 +265,7 @@ python main.py --help
 3. Open `http://localhost:5173` in your browser
 
 **Main Features:**
+
 - **Search Page** - Search restaurants and view details
 - **Venue Detail Page** - View AI insights, photos, and make reservations
 - **AI Insights** - Get smart recommendations for booking
@@ -302,12 +325,15 @@ resy-bot/
 ### Backend API Endpoints
 
 #### GET /api/search
+
 Search for restaurants by name.
 
 **Query Parameters:**
+
 - `query` (string) - Restaurant name to search
 
 **Response:**
+
 ```json
 {
   "results": [
@@ -322,9 +348,11 @@ Search for restaurants by name.
 ```
 
 #### GET /api/venue/{venue_id}
+
 Get detailed venue information.
 
 **Response:**
+
 ```json
 {
   "id": 12345,
@@ -340,9 +368,11 @@ Get detailed venue information.
 ```
 
 #### POST /api/gemini-search
+
 Get AI-powered reservation insights.
 
 **Request Body:**
+
 ```json
 {
   "venue_name": "Restaurant Name",
@@ -351,6 +381,7 @@ Get AI-powered reservation insights.
 ```
 
 **Response:**
+
 ```json
 {
   "answer_text": "This restaurant is known for...",
@@ -360,12 +391,15 @@ Get AI-powered reservation insights.
 ```
 
 #### GET /api/calendar/{venue_id}
+
 Get available time slots.
 
 **Query Parameters:**
+
 - `party_size` (integer) - Number of guests
 
 **Response:**
+
 ```json
 {
   "slots": [
@@ -380,9 +414,11 @@ Get available time slots.
 ```
 
 #### POST /api/reservation
+
 Create a reservation.
 
 **Request Body:**
+
 ```json
 {
   "venue_id": 12345,
@@ -406,12 +442,14 @@ The interface uses Resy's signature red color scheme:
 ### Backend Development
 
 **Run tests:**
+
 ```bash
 cd backend
 pytest
 ```
 
 **Linting:**
+
 ```bash
 flake8
 ```
@@ -419,16 +457,19 @@ flake8
 ### Frontend Development
 
 **Type checking:**
+
 ```bash
 npm run build
 ```
 
 **Linting:**
+
 ```bash
 npm run lint
 ```
 
 **Add new shadcn/ui components:**
+
 ```bash
 npx shadcn@latest add [component-name]
 ```
@@ -437,11 +478,13 @@ npx shadcn@latest add [component-name]
 
 **Backend:**
 The Flask server is production-ready. For deployment, consider using Gunicorn:
+
 ```bash
 gunicorn -w 4 -b 0.0.0.0:3001 app:app
 ```
 
 **Frontend:**
+
 ```bash
 npm run build
 npm run preview
