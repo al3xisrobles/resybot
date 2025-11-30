@@ -1,23 +1,29 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getDatabase, ref, get, set, Database } from "firebase/database";
+import { getDatabase, ref, get, set } from "firebase/database";
 
 // Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyBRKnRKQm-5Xy7UmAkBR1vLNWUU45PAfYo",
-  authDomain: "resybot-5bb59.firebaseapp.com",
-  projectId: "resybot-5bb59",
-  storageBucket: "resybot-5bb59.firebasestorage.app",
-  messagingSenderId: "989852153876",
-  appId: "1:989852153876:web:4f992021d186d244214f01",
-  measurementId: "G-CRZCLH183E",
-  databaseURL: "https://resybot-5bb59-default-rtdb.firebaseio.com"
+  apiKey: "AIzaSyBsxxRvxe_UB9VGgibgGMzWpunpo0Ji5Hc",
+  authDomain: "resybot-bd2db.firebaseapp.com",
+  projectId: "resybot-bd2db",
+  storageBucket: "resybot-bd2db.firebasestorage.app",
+  messagingSenderId: "782094781658",
+  appId: "1:782094781658:web:a5935d09518547971ea9e3",
+  measurementId: "G-JVN6BECKSE",
+  databaseURL: "https://resybot-bd2db-default-rtdb.firebaseio.com"
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const database = getDatabase(app);
+
+console.log('[Firebase] Initialized with config:', {
+  projectId: firebaseConfig.projectId,
+  databaseURL: firebaseConfig.databaseURL
+});
+console.log('[Firebase] Database instance:', database);
 
 export interface VenueCacheData {
   aiInsights?: string;
@@ -47,15 +53,29 @@ export async function hasVenueCache(venueId: string): Promise<boolean> {
  */
 export async function getVenueCache(venueId: string): Promise<VenueCacheData | null> {
   try {
-    const venueRef = ref(database, `venues/${venueId}`);
+    const path = `venues/${venueId}`;
+    console.log('[Firebase] Getting cache for venue:', venueId);
+    console.log('[Firebase] Database path:', path);
+    console.log('[Firebase] Database URL:', database.app.options.databaseURL);
+
+    const venueRef = ref(database, path);
     const snapshot = await get(venueRef);
 
+    console.log('[Firebase] Snapshot exists:', snapshot.exists());
     if (snapshot.exists()) {
-      return snapshot.val() as VenueCacheData;
+      const data = snapshot.val() as VenueCacheData;
+      console.log('[Firebase] Cache hit! Data:', data);
+      return data;
     }
+    console.log('[Firebase] Cache miss - no data found');
     return null;
   } catch (error) {
-    console.error('Error getting venue cache:', error);
+    console.error('[Firebase] Error getting venue cache:', error);
+    console.error('[Firebase] Error details:', {
+      message: error instanceof Error ? error.message : 'Unknown error',
+      venueId,
+      path: `venues/${venueId}`
+    });
     return null;
   }
 }
@@ -65,7 +85,12 @@ export async function getVenueCache(venueId: string): Promise<VenueCacheData | n
  */
 export async function saveVenueCache(venueId: string, data: Partial<VenueCacheData>): Promise<boolean> {
   try {
-    const venueRef = ref(database, `venues/${venueId}`);
+    const path = `venues/${venueId}`;
+    console.log('[Firebase] Saving cache for venue:', venueId);
+    console.log('[Firebase] Database path:', path);
+    console.log('[Firebase] Data to save:', data);
+
+    const venueRef = ref(database, path);
 
     // Get existing data to merge with new data
     const snapshot = await get(venueRef);
@@ -78,10 +103,18 @@ export async function saveVenueCache(venueId: string, data: Partial<VenueCacheDa
       lastUpdated: Date.now()
     };
 
+    console.log('[Firebase] Merged data:', updatedData);
     await set(venueRef, updatedData);
+    console.log('[Firebase] Successfully saved cache');
     return true;
   } catch (error) {
-    console.error('Error saving venue cache:', error);
+    console.error('[Firebase] Error saving venue cache:', error);
+    console.error('[Firebase] Error details:', {
+      message: error instanceof Error ? error.message : 'Unknown error',
+      venueId,
+      path: `venues/${venueId}`,
+      data
+    });
     return false;
   }
 }
