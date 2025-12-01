@@ -5,8 +5,9 @@ import { Footer } from '@/components/Footer'
 import { ScrollToTop } from '@/components/ScrollToTop'
 import { HomePage } from '@/pages/HomePage'
 import { VenueDetailPage } from '@/pages/VenueDetailPage'
-import { SearchResultsPage } from '@/pages/SearchResultsPage'
+import { SearchPage } from '@/pages/SearchPage'
 import { BookmarkedRestaurantsPage } from '@/pages/BookmarkedRestaurantsPage'
+import { ReservationsPage } from '@/pages/ReservationsPage'
 import { LoginPage } from '@/pages/LoginPage'
 import { SignupPage } from '@/pages/SignupPage'
 import { VenueProvider } from '@/contexts/VenueContext'
@@ -28,8 +29,9 @@ function App() {
               <Route path="/signup" element={<SignupPage />} />
               <Route path="/" element={<HomePage />} />
               <Route path="/venue" element={<VenueDetailPage />} />
-              <Route path="/search-results" element={<SearchResultsPage />} />
+              <Route path="/search" element={<SearchPage />} />
               <Route path="/bookmarks" element={<BookmarkedRestaurantsPage />} />
+              <Route path="/reservations" element={<ReservationsPage />} />
             </Routes>
 
             <Footer />

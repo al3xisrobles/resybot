@@ -39,11 +39,6 @@ export function SearchResultItem({
     img.src = imageUrl
   }, [imageUrl])
 
-  // Don't render until image is loaded
-  if (!imageLoaded) {
-    return null
-  }
-
   return (
     <button
       onClick={onClick}
@@ -51,16 +46,20 @@ export function SearchResultItem({
     >
       <div className="flex items-start gap-3">
         {/* Image Thumbnail */}
-        {imageUrl && !imageError && (
+        {imageUrl && (
           <div className="shrink-0 w-16 h-16 rounded-md overflow-hidden bg-muted">
-            <img
-              src={imageUrl}
-              alt={name}
-              className="w-full h-full object-cover"
-              onError={(e) => {
-                e.currentTarget.style.display = 'none'
-              }}
-            />
+            {imageLoaded && !imageError ? (
+              <img
+                src={imageUrl}
+                alt={name}
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none'
+                }}
+              />
+            ) : (
+              <div className="w-full h-full bg-muted animate-pulse" />
+            )}
           </div>
         )}
 

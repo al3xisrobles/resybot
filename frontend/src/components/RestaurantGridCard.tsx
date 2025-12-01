@@ -14,7 +14,6 @@ export interface RestaurantGridCardProps {
 }
 
 export function RestaurantGridCard({
-  id,
   name,
   type,
   priceRange,

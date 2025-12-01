@@ -1,0 +1,38 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Venues collection - read by all, write only by authenticated users (for caching)
+    match /venues/{venueId} {
+      allow read: if true;  // Anyone can read cached venue data
+      allow write: if isSignedIn();  // Only authenticated users can cache data
+    }
+
+    // Cache collection - read by all, write only by authenticated users
+    match /cache/{cacheId} {
+      allow read: if true;  // Anyone can read trending/topRated cache
+      allow write: if isSignedIn();  // Only authenticated users can update cache
+    }
+
+    // Users collection
+    match /users/{userId} {
+      // User document - only the user can read/write their own data
+      allow read, write: if isOwner(userId);
+
+      // Bookmarks subcollection - only the user can read/write their own bookmarks
+      match /bookmarks/{venueId} {
+        allow read, write: if isOwner(userId);
+      }
+    }
+  }
+}

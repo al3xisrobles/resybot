@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
-import { useSearchParams, useNavigate } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 import { format } from 'date-fns'
-import { ArrowLeft, LoaderCircle, AlertCircle, CheckCircle2, MapPin, Banknote, Sparkles, ExternalLink, RefreshCw, Map, CalendarRange, Calendar as CalendarIcon, ChevronDown, Bookmark, Share } from 'lucide-react'
+import { LoaderCircle, AlertCircle, CheckCircle2, MapPin, Banknote, Sparkles, ExternalLink, RefreshCw, Map, CalendarRange, Calendar as CalendarIcon, ChevronDown, Bookmark, Share } from 'lucide-react'
 import { toast } from 'sonner'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
@@ -20,7 +20,6 @@ import { getVenueCache, saveAiInsights, saveVenueCache } from '@/services/fireba
 
 export function VenueDetailPage() {
   const [searchParams] = useSearchParams()
-  const navigate = useNavigate()
   const venueId = searchParams.get('id')
 
   // Use context for reservation form to persist across navigation
@@ -337,22 +336,8 @@ export function VenueDetailPage() {
 
   return (
     <div className="min-h-screen bg-background pt-32">
-      {/* Header with Back Button */}
-      <div className="bg-card">
-        <div className="container mx-auto px-4 py-4">
-          <Button
-            variant="ghost"
-            onClick={() => navigate('/')}
-            className="gap-2"
-          >
-            <ArrowLeft className="size-4" />
-            Back to Search
-          </Button>
-        </div>
-      </div>
-
       {/* Main Content */}
-      <main className="container mx-auto px-4 pb-8">
+      <main className="container mx-auto px-4 pb-8 pt-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Left Side - Restaurant Information */}
           <div>
@@ -377,8 +362,38 @@ export function VenueDetailPage() {
                     <div className="space-y-4">
                       <div>
                         <h2 className="text-4xl font-bold">{venueData.name}</h2>
-                        <p className="text-muted-foreground">{venueData.type}</p>
+                        <div className='flex flex-row justify-between items-center'>
+                          <p className="text-muted-foreground">{venueData.type}</p>
+                          {venueData && (
+                            <div className="flex gap-2">
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className={`gap-2 ${isBookmarked ? 'bg-primary/10' : ''}`}
+                                onClick={() => setIsBookmarked(!isBookmarked)}
+                              >
+                                <Bookmark className={`size-4 ${isBookmarked ? 'fill-primary stroke-primary' : ''}`} />
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="gap-2"
+                                onClick={() => {
+                                  const url = window.location.href
+                                  navigator.clipboard.writeText(url)
+                                  toast('Link copied to clipboard', {
+                                    description: 'Share this restaurant with friends'
+                                  })
+                                }}
+                              >
+                                <Share className="size-4" />
+                              </Button>
+                            </div>
+                          )}
+                        </div>
                       </div>
+
+                                          {/* Bookmark and Share Buttons */}
 
                       <Separator />
 
@@ -414,7 +429,7 @@ export function VenueDetailPage() {
                             </p>
                           </div>
                         </div>
-{/*
+                        {/*
                         {venueData.rating && venueData.rating != 0 && venueData.rating != "0" && (
                           <div className="flex items-center gap-3">
                             <span className="text-lg">⭐</span>
@@ -429,36 +444,6 @@ export function VenueDetailPage() {
                   )}
 
                   <div className="absolute bottom-0 left-0 right-0 p-6 space-y-3">
-                    {/* Bookmark and Share Buttons */}
-                    {venueData && (
-                      <div className="flex gap-2">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className={`gap-2 ${isBookmarked ? 'bg-primary/10' : ''}`}
-                          onClick={() => setIsBookmarked(!isBookmarked)}
-                        >
-                          <Bookmark className={`size-4 ${isBookmarked ? 'fill-primary stroke-primary' : ''}`} />
-                          {isBookmarked ? 'Bookmarked' : 'Bookmark'}
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="gap-2"
-                          onClick={() => {
-                            const url = window.location.href
-                            navigator.clipboard.writeText(url)
-                            toast('Link copied to clipboard', {
-                              description: 'Share this restaurant with friends'
-                            })
-                          }}
-                        >
-                          <Share className="size-4" />
-                          Share
-                        </Button>
-                      </div>
-                    )}
-
                     {/* Social Links */}
                     {venueData && (
                         <div className="flex flex-wrap gap-2">
