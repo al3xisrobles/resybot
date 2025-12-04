@@ -106,7 +106,7 @@ pip install -r requirements.txt
 
 ```bash
 GEMINI_API_KEY=your_gemini_api_key_here
-GOOGLE_PLACES_API_KEY=your_google_places_api_key_here
+GOOGLE_MAPS_API_KEY=your_GOOGLE_MAPS_API_KEY_here
 ```
 
 Note: The Google Places API key is required for Google Maps link generation. Get your API key from the [Google Cloud Console](https://console.cloud.google.com/) and enable the Places API.

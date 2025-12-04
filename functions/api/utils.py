@@ -21,7 +21,7 @@ logger.setLevel(logging.INFO)
 # Configuration
 CREDENTIALS_PATH = os.path.join(os.path.dirname(__file__), "credentials.json")
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY', '')
-GOOGLE_PLACES_API_KEY = os.getenv('GOOGLE_PLACES_API_KEY', '')
+GOOGLE_MAPS_API_KEY = os.getenv('GOOGLE_MAPS_API_KEY', '')
 CLOUD_FUNCTIONS_BASE = "https://us-central1-resybot-bd2db.cloudfunctions.net"
 
 # Search results cache with TTL (5 minutes)
@@ -65,7 +65,7 @@ def fetch_venue_photo_with_cache(venue_id, restaurant_name):
     Returns:
         str: Photo URL if found, None otherwise
     """
-    if not GOOGLE_PLACES_API_KEY:
+    if not GOOGLE_MAPS_API_KEY:
         return None
 
     # Create cache key from venue_id and restaurant_name
@@ -102,7 +102,7 @@ def fetch_venue_photo_with_cache(venue_id, restaurant_name):
         search_url = 'https://maps.googleapis.com/maps/api/place/textsearch/json'
         search_params = {
             'query': f"{restaurant_name} restaurant New York",
-            'key': GOOGLE_PLACES_API_KEY
+            'key': GOOGLE_MAPS_API_KEY
         }
 
         search_response = requests.get(search_url, params=search_params, timeout=10)
@@ -135,7 +135,7 @@ def fetch_venue_photo_with_cache(venue_id, restaurant_name):
             return None
 
         # Construct photo URL (maxwidth=800 for cost savings)
-        photo_url = f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photo_reference={photo_reference}&key={GOOGLE_PLACES_API_KEY}"
+        photo_url = f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photo_reference={photo_reference}&key={GOOGLE_MAPS_API_KEY}"
 
         # Build cache data
         result_data = {
@@ -247,7 +247,7 @@ def fetch_venue_image_for_list(venue_id, venue_name, image_data):
     logger.info(f"✗ [{venue_name}] No image in Resy API response")
 
     # 4. Fetch from Google Places as last resort
-    if venue_id and venue_name and GOOGLE_PLACES_API_KEY:
+    if venue_id and venue_name and GOOGLE_MAPS_API_KEY:
         return fetch_venue_photo_with_cache(venue_id, venue_name)
 
     logger.warning(f"✗ [{venue_name}] NO IMAGE FOUND from any source")

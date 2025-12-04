@@ -14,7 +14,7 @@ from .utils import (
     get_resy_headers,
     fetch_venue_photo_with_cache,
     photo_cache,
-    GOOGLE_PLACES_API_KEY
+    GOOGLE_MAPS_API_KEY
 )
 
 logger = logging.getLogger(__name__)
@@ -147,7 +147,7 @@ def venue_links(req: Request):
         }
 
         # Use Google Places API for Google Maps link
-        if GOOGLE_PLACES_API_KEY:
+        if GOOGLE_MAPS_API_KEY:
             try:
                 # Google Maps search using Places API
                 logger.info(f"[VENUE-LINKS] Searching for Google Maps URL using Places API...")
@@ -183,7 +183,7 @@ def venue_links(req: Request):
                     'input': full_address,
                     'inputtype': 'textquery',
                     'fields': 'place_id,name',
-                    'key': GOOGLE_PLACES_API_KEY
+                    'key': GOOGLE_MAPS_API_KEY
                 }
 
                 places_response = requests.get(places_url, params=params)
