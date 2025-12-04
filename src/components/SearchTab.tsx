@@ -39,10 +39,10 @@ export function SearchTab({
     setSearchResults([]);
 
     try {
-      const results = await searchRestaurants(searchQuery);
-      setSearchResults(results);
+      const response = await searchRestaurants({ query: searchQuery });
+      setSearchResults(response.results);
 
-      if (results.length === 0) {
+      if (response.results.length === 0) {
         setError("No restaurants found matching your search");
       }
     } catch (err) {
