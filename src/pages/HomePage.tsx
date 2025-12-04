@@ -17,11 +17,8 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
-import {
-  getTrendingRestaurants,
-  getTopRatedRestaurants,
-  type TrendingRestaurant,
-} from "@/lib/api";
+import { getTrendingRestaurants, getTopRatedRestaurants } from "@/lib/api";
+import type { TrendingRestaurant } from "@/lib/interfaces";
 import { useVenue } from "@/contexts/VenueContext";
 import { TIME_SLOTS } from "@/lib/time-slots";
 import { cn } from "@/lib/utils";

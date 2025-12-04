@@ -18,7 +18,6 @@ export interface SearchResultItemProps {
 }
 
 export function SearchResultItem({
-  id,
   name,
   type,
   priceRange,
@@ -106,7 +105,7 @@ export function SearchResultItem({
                 imageSize === "small" ? "text-xs" : "text-sm"
               } text-muted-foreground`}
             >
-              <MapPin className="size-3 flex-shrink-0" />
+              <MapPin className="size-3 shrink-0" />
               <span className="truncate">{location}</span>
             </div>
           )}

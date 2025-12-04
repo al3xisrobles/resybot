@@ -14,7 +14,7 @@ import {
   orderBy,
 } from "firebase/firestore";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
-import type { TrendingRestaurant } from "@/lib/api";
+import type { TrendingRestaurant } from "@/lib/interfaces";
 
 // Firebase configuration
 const firebaseConfig = {

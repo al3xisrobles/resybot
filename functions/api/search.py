@@ -19,7 +19,6 @@ from .utils import (
     get_search_cache_key,
     get_cached_search_results,
     save_search_results_to_cache,
-    filter_and_format_venues
 )
 
 logger = logging.getLogger(__name__)

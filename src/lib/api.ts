@@ -25,6 +25,7 @@ const API_ENDPOINTS = {
 import type {
   SearchFilters,
   SearchResponse,
+  SearchApiResponse,
   VenueData,
   ReservationRequest,
   GeminiSearchResponse,
@@ -93,7 +94,7 @@ export async function searchRestaurants(
     throw new Error(error.error || "Failed to search restaurants");
   }
 
-  const result: any = await response.json();
+  const result: SearchApiResponse = await response.json();
 
   console.log("[API] searchRestaurants raw response:", {
     hasPagination: !!result.pagination,
@@ -189,7 +190,7 @@ export async function searchRestaurantsByMap(
     throw new Error(error.error || "Failed to search restaurants by map");
   }
 
-  const result: any = await response.json();
+  const result: SearchApiResponse = await response.json();
 
   console.log("[API] searchRestaurantsByMap raw response:", {
     hasPagination: !!result.pagination,

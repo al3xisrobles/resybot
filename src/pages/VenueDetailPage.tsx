@@ -50,19 +50,20 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import {
-  makeReservation,
   searchRestaurant,
   getGeminiSearch,
   getCalendar,
   getVenuePhoto,
   getVenueLinks,
-  type VenueData,
-  type GeminiSearchResponse,
-  type CalendarData,
-  type VenuePhotoData,
-  type VenueLinks,
-  type VenueLinksResponse,
 } from "@/lib/api";
+import type {
+  VenueData,
+  GeminiSearchResponse,
+  CalendarData,
+  VenuePhotoData,
+  VenueLinks,
+  VenueLinksResponse,
+} from "@/lib/interfaces";
 import { cn } from "@/lib/utils";
 import { TIME_SLOTS } from "@/lib/time-slots";
 import { useVenue } from "@/contexts/VenueContext";

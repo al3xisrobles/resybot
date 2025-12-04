@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import {
   Table,
   TableBody,
@@ -7,7 +6,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import type { Reservation } from "@/lib/mockReservations";
+import type { Reservation } from "@/lib/interfaces/app-types";
 
 interface ReservationsDataTableProps {
   reservations: Reservation[];
@@ -16,8 +15,6 @@ interface ReservationsDataTableProps {
 export function ReservationsDataTable({
   reservations,
 }: ReservationsDataTableProps) {
-  const navigate = useNavigate();
-
   const getStatusColor = (status: Reservation["status"]) => {
     switch (status) {
       case "Scheduled":

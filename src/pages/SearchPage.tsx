@@ -40,12 +40,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { TIME_SLOTS } from "@/lib/time-slots";
 import { SearchResultItem } from "@/components/SearchResultItem";
-import {
-  searchRestaurantsByMap,
-  getVenueLinks,
-  type SearchPagination,
-  type SearchResult,
-} from "@/lib/api";
+import { searchRestaurantsByMap, getVenueLinks } from "@/lib/api";
+import type { SearchPagination, SearchResult } from "@/lib/interfaces";
 import { useVenue } from "@/contexts/VenueContext";
 import {
   Pagination,
@@ -105,7 +101,7 @@ export function SearchPage() {
     notReleasedOnly: false,
   });
 
-  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const [loading, setLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
   const [hoveredVenueId, setHoveredVenueId] = useState<string | null>(null);
@@ -1062,7 +1058,7 @@ export function SearchPage() {
             {activeTab === "browse" && (
               <>
                 {/* Search Here Button - Overlaid on map */}
-                <div className="absolute top-6 left-1/2 -translate-x-1/2 z-[1000] flex flex-col items-center gap-1">
+                <div className="absolute top-6 left-1/2 -translate-x-1/2 z-1000 flex flex-col items-center gap-1">
                   <Button
                     onClick={() => {
                       console.log(

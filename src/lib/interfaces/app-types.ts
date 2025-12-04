@@ -1,3 +1,11 @@
+/**
+ * Application Types
+ * These interfaces represent the domain models and data structures used throughout the app
+ */
+
+/**
+ * Venue data model
+ */
 export interface VenueData {
   name: string;
   venue_id: string;
@@ -8,6 +16,9 @@ export interface VenueData {
   rating: number | null;
 }
 
+/**
+ * Search result model for individual restaurants
+ */
 export interface SearchResult {
   id: string;
   name: string;
@@ -24,6 +35,9 @@ export interface SearchResult {
   availabilityStatus?: string; // Status message when no times available (e.g., "Fully booked", "Closed")
 }
 
+/**
+ * Reservation request payload
+ */
 export interface ReservationRequest {
   venueId: string;
   partySize: string;
@@ -36,6 +50,9 @@ export interface ReservationRequest {
   dropMinute: string;
 }
 
+/**
+ * Gemini AI search response models
+ */
 export interface GroundingChunk {
   index: number;
   title: string;
@@ -71,13 +88,9 @@ export interface GeminiSearchResponse {
   suggestedFollowUps: string[];
 }
 
-export interface ApiResponse<T> {
-  success: boolean;
-  data?: T;
-  message?: string;
-  error?: string;
-}
-
+/**
+ * Search filter models
+ */
 export interface SearchFilters {
   query?: string;
   cuisines?: string[];
@@ -88,26 +101,6 @@ export interface SearchFilters {
   availableOnly?: boolean;
   day?: string; // Required if available_only is true
   partySize?: string; // Required if available_only is true
-}
-
-export interface SearchPagination {
-  offset: number;
-  perPage: number;
-  nextOffset: number | null;
-  hasMore: boolean;
-  total?: number; // Total from Resy API (unfiltered estimate)
-}
-
-export interface SearchResponse {
-  results: SearchResult[];
-  pagination: SearchPagination;
-}
-
-export interface VenuePhotoData {
-  photoUrl: string; // For backwards compatibility
-  photoUrls: string[]; // Array of photo URLs
-  placeName: string;
-  placeAddress: string;
 }
 
 export interface MapSearchFilters {
@@ -127,6 +120,39 @@ export interface MapSearchFilters {
   desiredTime?: string; // Desired time in HH:MM format for sorting available times
 }
 
+/**
+ * Pagination model
+ */
+export interface SearchPagination {
+  offset: number;
+  perPage: number;
+  nextOffset: number | null;
+  hasMore: boolean;
+  total?: number; // Total from Resy API (unfiltered estimate)
+}
+
+/**
+ * Search response model (used internally by api.ts)
+ * This is what api.ts functions return, not what the API returns
+ */
+export interface SearchResponse {
+  results: SearchResult[];
+  pagination: SearchPagination;
+}
+
+/**
+ * Venue photo data model
+ */
+export interface VenuePhotoData {
+  photoUrl: string; // For backwards compatibility
+  photoUrls: string[]; // Array of photo URLs
+  placeName: string;
+  placeAddress: string;
+}
+
+/**
+ * Calendar availability models
+ */
 export interface CalendarAvailability {
   date: string;
   available: boolean;
@@ -140,6 +166,9 @@ export interface CalendarData {
   endDate: string;
 }
 
+/**
+ * Venue links models
+ */
 export interface VenueLinks {
   googleMaps: string | null;
   resy: string | null;
@@ -159,6 +188,9 @@ export interface VenueLinksResponse {
   venueData: VenueBasicData;
 }
 
+/**
+ * Trending restaurant model
+ */
 export interface TrendingRestaurant {
   id: string;
   name: string;
@@ -172,4 +204,17 @@ export interface TrendingRestaurant {
   };
   imageUrl: string | null;
   rating: number | null;
+}
+
+export interface Reservation {
+  id: string;
+  venueId: string;
+  venueName: string;
+  venueImage: string;
+  date: string;
+  time: string;
+  partySize: number;
+  status: "Scheduled" | "Succeeded" | "Failed";
+  attemptedAt?: number;
+  note?: string;
 }

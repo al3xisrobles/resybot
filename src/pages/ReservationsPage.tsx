@@ -8,7 +8,7 @@ import {
 } from "@/services/firebase";
 import { auth } from "@/services/firebase";
 import { searchRestaurant } from "@/lib/api";
-import type { Reservation } from "@/lib/mockReservations";
+import type { Reservation } from "@/lib/interfaces/app-types";
 
 /**
  * Transform Firestore ReservationJob to UI Reservation format

@@ -45,7 +45,7 @@ export function RestaurantGridCard({
       onClick={onClick}
     >
       {/* Image */}
-      <div className="relative aspect-[4/3] w-full bg-muted overflow-hidden">
+      <div className="relative aspect-4/3 w-full bg-muted overflow-hidden">
         {imageUrl ? (
           <img
             src={imageUrl}
@@ -70,7 +70,7 @@ export function RestaurantGridCard({
             {name}
           </h3>
           {priceRange > 0 && (
-            <span className="text-sm text-muted-foreground font-medium flex-shrink-0">
+            <span className="text-sm text-muted-foreground font-medium shrink-0">
               {"$".repeat(priceRange)}
             </span>
           )}
@@ -85,7 +85,7 @@ export function RestaurantGridCard({
         <div className="items-center flex flex-row justify-between">
           {location && (
             <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
-              <MapPin className="size-3.5 flex-shrink-0" />
+              <MapPin className="size-3.5 shrink-0" />
               <span className="line-clamp-1">{location}</span>
             </div>
           )}

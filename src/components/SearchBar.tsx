@@ -50,43 +50,46 @@ export function SearchBar({ className, inputClassName }: SearchBarProps) {
   }, []);
 
   // Debounced search function
-  const performSearch = useCallback(async (query: string) => {
-    const querySnapshot = query;
-    setLoading(true);
-    if (inputFocused) {
-      setSearchPopoverOpen(true);
-    }
-
-    try {
-      // Create SearchFilter
-      const searchFilter = {
-        query,
-      };
-
-      const results = (await searchRestaurants(searchFilter)).results;
-
-      // Check if this query is still current
-      if (currentQueryRef.current !== querySnapshot) {
-        return; // Ignore results from old queries
-      }
-
-      // Don't fetch photos here - images will load lazily from the imageUrl
-      // that's already in the search results from the backend
-      setSearchResults(results);
-      if (inputFocused && (results.length > 0 || !query.trim())) {
+  const performSearch = useCallback(
+    async (query: string) => {
+      const querySnapshot = query;
+      setLoading(true);
+      if (inputFocused) {
         setSearchPopoverOpen(true);
       }
-    } catch (err) {
-      console.error("Search error:", err);
-      if (currentQueryRef.current === querySnapshot) {
-        setSearchPopoverOpen(false);
+
+      try {
+        // Create SearchFilter
+        const searchFilter = {
+          query,
+        };
+
+        const results = (await searchRestaurants(searchFilter)).results;
+
+        // Check if this query is still current
+        if (currentQueryRef.current !== querySnapshot) {
+          return; // Ignore results from old queries
+        }
+
+        // Don't fetch photos here - images will load lazily from the imageUrl
+        // that's already in the search results from the backend
+        setSearchResults(results);
+        if (inputFocused && (results.length > 0 || !query.trim())) {
+          setSearchPopoverOpen(true);
+        }
+      } catch (err) {
+        console.error("Search error:", err);
+        if (currentQueryRef.current === querySnapshot) {
+          setSearchPopoverOpen(false);
+        }
+      } finally {
+        if (currentQueryRef.current === querySnapshot) {
+          setLoading(false);
+        }
       }
-    } finally {
-      if (currentQueryRef.current === querySnapshot) {
-        setLoading(false);
-      }
-    }
-  }, [inputFocused, setSearchResults]);
+    },
+    [inputFocused, setSearchResults]
+  );
 
   const handleSearchChange = (value: string) => {
     setSearchQuery(value);
@@ -175,7 +178,7 @@ export function SearchBar({ className, inputClassName }: SearchBarProps) {
           </div>
         </PopoverTrigger>
         <PopoverContent
-          className="w-[var(--radix-popover-trigger-width)] p-0"
+          className="w-(--radix-popover-trigger-width) p-0"
           style={{ zIndex: 9998 }}
           align="start"
           onOpenAutoFocus={(e) => e.preventDefault()}
