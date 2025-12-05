@@ -7,10 +7,17 @@ import os
 import json
 import logging
 import requests
+import time as time_module
 from time import time
+from datetime import datetime
 from hashlib import md5
 from google import genai
+from urllib.parse import quote
+
 from firebase_admin import storage, firestore
+
+from .resy_client.models import FindRequestBody, ResyConfig
+from .resy_client.api_access import ResyApiAccess
 
 # Setup logging
 logger = logging.getLogger(__name__)
@@ -560,11 +567,6 @@ def get_venue_availability(venue_id, day, party_size, config, desired_time=None)
         Example: {'times': [], 'status': 'Not released yet'}
     """
     try:
-        from resy_client.models import FindRequestBody, ResyConfig
-        from resy_client.api_access import ResyApiAccess
-        from datetime import datetime
-        import time as time_module
-
         # Add a small delay to help with rate limiting (0.1 seconds)
         time_module.sleep(0.1)
 
@@ -743,7 +745,6 @@ def filter_and_format_venues(hits, filters, seen_ids=None, config=None, fetch_av
         geoloc = venue.get('_geoloc', {})
 
         # Construct photo proxy URL for lazy loading
-        from urllib.parse import quote
         venue_name = venue.get('name', 'Unknown')
         image_url = f"{CLOUD_FUNCTIONS_BASE}/venue_photo_proxy?id={venue_id}&name={quote(venue_name)}"
 
