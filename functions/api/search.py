@@ -19,6 +19,7 @@ from .utils import (
     get_search_cache_key,
     get_cached_search_results,
     save_search_results_to_cache,
+    get_venue_availability
 )
 
 logger = logging.getLogger(__name__)
@@ -256,8 +257,6 @@ def search_map(req: Request):
 
         # Now fetch availability ONLY for the current page results (in parallel)
         if should_fetch_availability and results:
-            from utils import get_venue_availability
-
             print(f"[MAP SEARCH] Fetching availability for {len(results)} restaurants on current page (parallel)")
 
             # Use ThreadPoolExecutor to fetch availability in parallel
@@ -326,8 +325,6 @@ def search_map(req: Request):
 
             # Check if we have more cached restaurants to check
             if len(all_results) > potential_next_offset:
-                from utils import get_venue_availability
-
                 # We have more cached restaurants - peek at next page to see if any match the filter
                 filter_name = "available" if filters.get('available_only') else "not released yet"
                 print(f"[MAP SEARCH] Checking next page (offset {potential_next_offset}) for {filter_name} restaurants...")
