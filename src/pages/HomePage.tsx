@@ -149,16 +149,16 @@ export function HomePage() {
   return (
     <div className="h-screen py-24 overflow-y-auto relative">
       {/* Animated Mesh Gradient Background */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none bg-background opacity-0 sm:opacity-20 lg:opacity-50">
+      {/* <div className="fixed inset-0 overflow-hidden pointer-events-none bg-background opacity-0 sm:opacity-20 lg:opacity-50">
         <div className="absolute top-0 right-0 w-96 h-96 bg-linear-to-br from-orange-300/10 via-red-300/15 to-pink-300/10 rounded-full blur-3xl animate-mesh-1" />
         <div className="absolute top-1/4 right-1/3 w-lg h-128 bg-linear-to-bl from-amber-300/10 via-orange-300/10 to-red-400/10 rounded-full blur-3xl animate-mesh-2" />
         <div className="absolute top-1/2 left-1/4 w-md h-112 bg-linear-to-tr from-rose-300/15 via-orange-400/10 to-amber-300/15 rounded-full blur-3xl animate-mesh-3" />
         <div className="absolute bottom-1/4 left-0 w-80 h-80 bg-linear-to-tl from-red-400/10 via-pink-300/10 to-orange-300/15 rounded-full blur-3xl animate-mesh-4" />
-      </div>
+      </div> */}
 
       {/* Main Content - Grid Layout */}
       <main className="container mx-auto px-4 py-8 relative">
-        <div className="flex flex-col sm:flex-row gap-2 sm:gap-8 mb-2">
+        <div className="flex flex-col lg:flex-row gap-2 sm:gap-8 mb-2">
           {/* Left: Search Section */}
           <div className="max-w-160 w-full lg:pr-16">
             {/* Title */}
@@ -180,7 +180,7 @@ export function HomePage() {
             </div>
 
             {/* Reservation Form - One Row */}
-            <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <div className="mt-10 grid grid-cols-3 gap-4 mb-8">
               {/* Party Size */}
               <div className="space-y-2">
                 <Label>Party Size</Label>

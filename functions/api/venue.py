@@ -12,7 +12,7 @@ from firebase_functions.options import CorsOptions
 from .utils import (
     load_credentials,
     get_resy_headers,
-    fetch_venue_photo_with_cache,
+    fetch_venue_photo,
     photo_cache,
     GOOGLE_MAPS_API_KEY
 )
@@ -60,7 +60,7 @@ def venue(req: Request):
         venue_name = venue_data.get('name')
 
         # Fetch photo with caching
-        photo_url = fetch_venue_photo_with_cache(venue_id, venue_name) if venue_name else None
+        photo_url = fetch_venue_photo(venue_id, venue_name) if venue_name else None
 
         return {
             'success': True,
@@ -274,7 +274,7 @@ def venue_photo(req: Request):
             }, 400
 
         # Fetch photo with caching
-        photo_url = fetch_venue_photo_with_cache(venue_id, restaurant_name)
+        photo_url = fetch_venue_photo(venue_id, restaurant_name)
         logger.info(f"[PHOTO] Fetched photo_url={photo_url} for {restaurant_name}")
 
         if not photo_url:
@@ -334,7 +334,7 @@ def venue_photo_proxy(req: Request):
             }, 400
 
         # Fetch photo URL with caching
-        photo_url = fetch_venue_photo_with_cache(venue_id, restaurant_name)
+        photo_url = fetch_venue_photo(venue_id, restaurant_name)
         logger.info(f"[PHOTO-PROXY] Fetched photo_url={photo_url} for {restaurant_name}")
 
         if not photo_url:

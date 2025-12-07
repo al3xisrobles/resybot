@@ -9,7 +9,7 @@ import requests
 from firebase_functions.https_fn import on_request, Request
 from firebase_functions.options import CorsOptions
 
-from .utils import load_credentials, get_resy_headers, fetch_venue_image_for_list
+from .utils import load_credentials, get_resy_headers, fetch_venue_photo
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -56,7 +56,7 @@ def climbing(req: Request):
             venue_name = venue.get('name', '')
 
             # Fetch image with comprehensive logging
-            image_url = fetch_venue_image_for_list(venue_id, venue_name, image_data)
+            image_url = fetch_venue_photo(venue_id, venue_name, image_data)
 
             restaurants.append({
                 'id': venue_id,
