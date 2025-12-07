@@ -26,6 +26,7 @@ logger.setLevel(logging.INFO)
 # Configuration
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY', '')
 GOOGLE_MAPS_API_KEY = os.getenv('GOOGLE_MAPS_API_KEY', '')
+TRANSIENT_STATUS_CODES = {500, 502}
 
 # Search results cache with TTL (5 minutes)
 # Format: {cache_key: {'results': [...], 'total': int, 'timestamp': float}}
@@ -636,6 +637,66 @@ def build_search_payload(query, filters, geo_config, page=1):
     return payload
 
 
+def is_transient_resy_error(error):
+    """Return True if the error looks transient (timeouts/5xx) from Resy."""
+    if isinstance(error, (requests.exceptions.Timeout, requests.exceptions.ReadTimeout, requests.exceptions.ConnectionError)):
+        return True
+
+    if isinstance(error, requests.exceptions.HTTPError):
+        status = getattr(error.response, "status_code", None)
+        if status in TRANSIENT_STATUS_CODES:
+            return True
+
+    message = str(error).lower()
+    if any(code in message for code in [" 500", " 502", "bad gateway", "read timed out"]):
+        return True
+
+    return False
+
+
+def retry_with_backoff(func, max_attempts=3, base_delay=0.3):
+    """
+    Retry a callable on transient Resy errors with exponential backoff.
+
+    Args:
+        func: Callable to execute.
+        max_attempts: Total attempts (including the first).
+        base_delay: Initial delay in seconds; doubles each retry.
+    """
+    last_error = None
+    for attempt in range(max_attempts):
+        try:
+            return func()
+        except Exception as exc:
+            last_error = exc
+            if not is_transient_resy_error(exc) or attempt == max_attempts - 1:
+                raise
+
+            delay = base_delay * (2 ** attempt)
+            time_module.sleep(delay)
+
+    if last_error:
+        raise last_error
+
+
+def _fetch_calendar(headers, params):
+    """Wrapper for the calendar GET so we can reuse retry logic."""
+    response = requests.get(
+        'https://api.resy.com/4/venue/calendar',
+        params=params,
+        headers=headers,
+        timeout=10
+    )
+
+    if response.status_code in TRANSIENT_STATUS_CODES:
+        raise requests.exceptions.HTTPError(
+            f"Calendar returned {response.status_code}",
+            response=response
+        )
+
+    return response
+
+
 def get_venue_availability(venue_id, day, party_size, config, desired_time=None):
     """
     Fetch available time slots for a specific venue
@@ -684,14 +745,20 @@ def get_venue_availability(venue_id, day, party_size, config, desired_time=None)
             'end_date': target_date.strftime('%Y-%m-%d')
         }
 
-        calendar_response = requests.get(
-            'https://api.resy.com/4/venue/calendar',
-            params=params,
-            headers=headers,
-            timeout=10
-        )
+        calendar_response = None
+        try:
+            calendar_response = retry_with_backoff(
+                lambda: _fetch_calendar(headers, params),
+                max_attempts=3,
+                base_delay=0.3
+            )
+        except Exception as calendar_error:
+            if is_transient_resy_error(calendar_error):
+                print(f"[AVAILABILITY] Transient calendar error for venue {venue_id}: {calendar_error}")
+            else:
+                print(f"[AVAILABILITY] Calendar error for venue {venue_id}: {calendar_error}")
 
-        if calendar_response.status_code == 200:
+        if calendar_response and calendar_response.status_code == 200:
             calendar_data = calendar_response.json()
             scheduled = calendar_data.get('scheduled', [])
 
@@ -732,8 +799,20 @@ def get_venue_availability(venue_id, day, party_size, config, desired_time=None)
             venue_id=str(venue_id)
         )
 
-        # Get slots
-        slots = api_access.find_booking_slots(find_request)
+        # Get slots with retry for transient failures
+        try:
+            slots = retry_with_backoff(
+                lambda: api_access.find_booking_slots(find_request),
+                max_attempts=3,
+                base_delay=0.3
+            )
+        except Exception as slot_error:
+            if is_transient_resy_error(slot_error):
+                print(f"[AVAILABILITY] Transient Resy error fetching slots for venue {venue_id}: {slot_error}")
+                return {'times': [], 'status': 'Resy temporarily unavailable'}
+
+            print(f"[AVAILABILITY] Error fetching slots for venue {venue_id}: {slot_error}")
+            return {'times': [], 'status': 'Unable to fetch'}
 
         if not slots:
             # No slots returned - check if calendar said available but we got no slots

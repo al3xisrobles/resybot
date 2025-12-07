@@ -450,7 +450,6 @@ export function SearchPage() {
                                 !reservationForm.date && "text-muted-foreground"
                               )}
                             >
-                              <CalendarIcon className="mr-2 size-4" />
                               {reservationForm.date ? (
                                 format(reservationForm.date, "MMM d, yyyy")
                               ) : (
@@ -613,7 +612,6 @@ export function SearchPage() {
                                 !reservationForm.date && "text-muted-foreground"
                               )}
                             >
-                              <CalendarIcon className="mr-2 size-4" />
                               {reservationForm.date ? (
                                 format(reservationForm.date, "MMM d, yyyy")
                               ) : (
