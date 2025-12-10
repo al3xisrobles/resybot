@@ -79,15 +79,16 @@ export function Hero({ reservationForm, setReservationForm }: HeroProps) {
 
       <div className="max-w-4xl mx-auto text-center z-20">
         <h1 className="relative text-5xl sm:text-6xl md:text-7xl font-extrabold z-10 tracking-tight">
-          BOOK IMPO
-          {/* <span className="relative inline-block">
+          Book Impossible Reservations
+          {/* BOOK IMP
+          <span className="relative inline-block">
             <img
               src={GlitchedPlate}
               alt="O"
               className="inline-block w-10 h-10 sm:w-16 sm:h-16 md:w-14 md:h-14 align-middle pointer-events-none select-none -mt-2 sm:-mt-3 ml-0.5 sm:ml-1"
             />
-          </span> */}
-          SSIBLE RESERVATIONS
+          </span>
+          SSIBLE RESERVATIONS */}
         </h1>
         <p className="relative mt-3 text-sm sm:text-base w-[70%] mx-auto z-10 text-muted-foreground">
           Tell us where you want to eat—we monitor when reservations drop and

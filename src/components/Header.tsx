@@ -58,7 +58,7 @@ export function Header() {
   const showHeaderSearch = !isHomePage && isLoggedIn;
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-9998 border-b bg-card">
+    <header className="sticky top-0 left-0 right-0 z-9998 border-b bg-card">
       <div className="container mx-auto px-4 py-4">
         {/* Desktop Layout */}
         {!showHeaderSearch ? (

@@ -524,7 +524,7 @@ export function SearchPage() {
   }, [filters.priceRanges]);
 
   return (
-    <div className="h-screen bg-background pt-19 flex flex-col overflow-hidden">
+    <div className="h-screen bg-background flex flex-col overflow-hidden">
       <main className="flex-1 min-h-0 flex flex-col overflow-hidden">
         <div className="flex-1 flex gap-0 min-h-0 max-h-full overflow-hidden">
           {/* Left Side - Search Filters and Results */}
@@ -1029,7 +1029,7 @@ export function SearchPage() {
                       <span> (Page {currentPage})</span>
                     )}
                   </p>
-                  <div className={`${!pagination ? "pb-16" : ""} space-y-2`}>
+                  <div className="space-y-2">
                     {searchResults.map((result) => {
                       // For showing placeholder: need all reservation details (date, time, party size)
                       const hasAllReservationDetails =

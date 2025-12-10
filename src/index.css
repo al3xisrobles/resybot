@@ -125,13 +125,12 @@
   }
   body {
     @apply bg-background text-foreground;
-    overscroll-behavior: none;
-    cursor: default;
+    /* overscroll-behavior: none; */
   }
   html,
   body,
   #root {
-    @apply h-full overflow-hidden;
+    /* @apply h-full overflow-hidden; */
   }
 
   .leaflet-container {
