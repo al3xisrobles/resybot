@@ -55,7 +55,7 @@ export const SearchResultItem = React.memo(function SearchResultItem({
         {imageUrl && !imageError && (
           <div
             className={`shrink-0 ${
-              imageSize === "small" ? "w-16 h-16" : "w-32 h-32"
+              imageSize === "small" ? "w-16 h-16" : "w-24 h-24 sm:w-42 sm:h-42"
             } rounded-md overflow-hidden bg-muted relative`}
           >
             {!imageLoaded && (

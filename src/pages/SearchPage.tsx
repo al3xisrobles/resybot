@@ -124,8 +124,8 @@ const MapView = React.memo(function MapView({
           </MapMarker>
         );
       })}
-      <MapZoomControl className="top-auto left-1 bottom-13 right-auto" />
-      <MapLocateControl className="top-auto right-1 bottom-13 left-auto" />
+      <MapZoomControl className="top-auto left-1 bottom-2 right-auto" />
+      <MapLocateControl className="top-auto right-1 bottom-2 left-auto" />
     </Map>
   );
 });
