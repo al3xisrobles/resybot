@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import {
   LogOut,
   User,
@@ -40,17 +41,27 @@ export function Header() {
     }
   }
 
-  // Hide login button on login/signup pages
   const isAuthPage =
     location.pathname === "/login" || location.pathname === "/signup";
+
   const isHomePage =
     location.pathname === "/" || location.pathname === "/search";
+
+  const isLoggedIn = !!currentUser;
+
+  useEffect(() => {
+    console.log("Current user in Header:", currentUser);
+    console.log("Is logged in:", isLoggedIn);
+  }, [currentUser, isLoggedIn]);
+
+  // Whether we actually show a SearchBar in the header
+  const showHeaderSearch = !isHomePage && isLoggedIn;
 
   return (
     <header className="fixed top-0 left-0 right-0 z-9998 border-b bg-card">
       <div className="container mx-auto px-4 py-4">
         {/* Desktop Layout */}
-        {isHomePage ? (
+        {!showHeaderSearch ? (
           /* Home page - Centered navigation */
           <div className="hidden md:grid grid-cols-3 items-center gap-6">
             {/* Left: Logo and Title - Clickable */}
@@ -326,7 +337,7 @@ export function Header() {
         </div>
 
         {/* Mobile Search Bar (when not on home page) */}
-        {!isHomePage && (
+        {showHeaderSearch && (
           <div className="mt-4 md:hidden">
             <SearchBar className="relative w-full" inputClassName="pr-10" />
           </div>

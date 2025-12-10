@@ -89,7 +89,7 @@ export function HomePage() {
       description:
         "I am working to expand to more cities soon after OpenTable integration.",
       position: "bottom-left",
-      icon: <div className="size-2 mx-auto bg-blue-500 rounded-full" />,
+      icon: <div className="size-2 mx-auto bg-primary rounded-full" />,
     });
 
     fetchTopRated();

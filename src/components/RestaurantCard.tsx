@@ -1,17 +1,17 @@
-import { useState } from 'react'
-import { MapPin, ChevronRight, Bookmark } from 'lucide-react'
-import { Card } from '@/components/ui/card'
-import { Toggle } from '@/components/ui/toggle'
+import { useState } from "react";
+import { MapPin, ChevronRight, Bookmark } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { Toggle } from "@/components/ui/toggle";
 
 export interface RestaurantCardProps {
-  id: string
-  name: string
-  type?: string
-  priceRange: number
-  location?: string
-  imageUrl?: string | null
-  onClick?: () => void
-  showBookmark?: boolean
+  id: string;
+  name: string;
+  type?: string;
+  priceRange: number;
+  location?: string;
+  imageUrl?: string | null;
+  onClick?: () => void;
+  showBookmark?: boolean;
 }
 
 export function RestaurantCard({
@@ -21,14 +21,14 @@ export function RestaurantCard({
   location,
   imageUrl,
   onClick,
-  showBookmark = false
+  showBookmark = false,
 }: RestaurantCardProps) {
-  const [isBookmarked, setIsBookmarked] = useState(false)
+  const [isBookmarked, setIsBookmarked] = useState(false);
 
   const handleBookmarkClick = (e: React.MouseEvent) => {
-    e.stopPropagation()
-    setIsBookmarked(!isBookmarked)
-  }
+    e.stopPropagation();
+    setIsBookmarked(!isBookmarked);
+  };
 
   return (
     <Card
@@ -38,14 +38,14 @@ export function RestaurantCard({
       <div className="flex gap-4 p-4">
         {/* Left: Image Thumbnail */}
         {showBookmark && (
-          <div className="flex-shrink-0 w-24 h-24 rounded-lg overflow-hidden bg-muted">
+          <div className="shrink-0 w-24 h-24 rounded-lg overflow-hidden bg-muted">
             {imageUrl ? (
               <img
                 src={imageUrl}
                 alt={name}
                 className="w-full h-full object-cover"
                 onError={(e) => {
-                  e.currentTarget.style.display = 'none'
+                  e.currentTarget.style.display = "none";
                 }}
               />
             ) : (
@@ -75,7 +75,7 @@ export function RestaurantCard({
                     <span className="text-muted-foreground">•</span>
                   )}
                   <span className="text-muted-foreground font-medium">
-                    {'$'.repeat(priceRange)}
+                    {"$".repeat(priceRange)}
                   </span>
                 </>
               )}
@@ -84,7 +84,7 @@ export function RestaurantCard({
             {/* Location */}
             {location && (
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <MapPin className="size-3.5 flex-shrink-0" />
+                <MapPin className="size-3.5 shrink-0" />
                 <span className="truncate">{location}</span>
               </div>
             )}
@@ -111,5 +111,5 @@ export function RestaurantCard({
         </div>
       </div>
     </Card>
-  )
+  );
 }

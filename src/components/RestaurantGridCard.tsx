@@ -27,13 +27,6 @@ export function RestaurantGridCard({
 }: RestaurantGridCardProps) {
   const [isBookmarked, setIsBookmarked] = useState(false);
 
-  console.log("[RestaurantGridCard] Rendering:", {
-    name,
-    showPlaceholder,
-    availableTimes,
-    hasAvailableTimes: availableTimes && availableTimes.length > 0,
-  });
-
   const handleBookmarkClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     setIsBookmarked(!isBookmarked);

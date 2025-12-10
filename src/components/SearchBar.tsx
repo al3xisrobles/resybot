@@ -80,6 +80,8 @@ export function SearchBar({
           return; // Ignore results from old queries
         }
 
+        console.log("Search results fetched:", results);
+
         // Don't fetch photos here - images will load lazily from the imageUrl
         // that's already in the search results from the backend
         setSearchResults(results);
@@ -97,7 +99,7 @@ export function SearchBar({
         }
       }
     },
-    [inputFocused, setSearchResults]
+    [auth.currentUser, inputFocused, setSearchResults]
   );
 
   const handleSearchChange = (value: string) => {

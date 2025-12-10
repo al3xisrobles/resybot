@@ -88,8 +88,8 @@ interface MapViewProps {
   searchResults: SearchResult[];
   hoveredVenueIdRef: React.RefObject<string | null>;
   mapCenter: [number, number];
-  mapRef: React.MutableRefObject<LeafletMap | null>;
-  markerRefsMap: React.MutableRefObject<Map<string, LeafletMarkerType>>;
+  mapRef: React.RefObject<LeafletMap | null>;
+  markerRefsMap: React.RefObject<Map<string, LeafletMarkerType>>;
 }
 
 // MapView is now stable - it does NOT receive hoveredVenueId as a prop
