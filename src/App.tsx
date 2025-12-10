@@ -1,20 +1,21 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { Toaster } from 'sonner'
-import { Header } from '@/components/Header'
-import { Footer } from '@/components/Footer'
-import { ScrollToTop } from '@/components/ScrollToTop'
-import { HomePage } from '@/pages/HomePage'
-import { VenueDetailPage } from '@/pages/VenueDetailPage'
-import { SearchPage } from '@/pages/SearchPage'
-import { BookmarkedRestaurantsPage } from '@/pages/BookmarkedRestaurantsPage'
-import { ReservationsPage } from '@/pages/ReservationsPage'
-import { LoginPage } from '@/pages/LoginPage'
-import { SignupPage } from '@/pages/SignupPage'
-import { OnboardingPage } from '@/pages/OnboardingPage'
-import { VenueProvider } from '@/contexts/VenueContext'
-import { AuthProvider } from '@/contexts/AuthContext'
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Toaster } from "sonner";
+import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
+import { ScrollToTop } from "@/components/ScrollToTop";
+import { HomePage } from "@/pages/HomePage";
+import { VenueDetailPage } from "@/pages/VenueDetailPage";
+import { SearchPage } from "@/pages/SearchPage";
+import { BookmarkedRestaurantsPage } from "@/pages/BookmarkedRestaurantsPage";
+import { ReservationsPage } from "@/pages/ReservationsPage";
+import { LoginPage } from "@/pages/LoginPage";
+import { SignupPage } from "@/pages/SignupPage";
+import { OnboardingPage } from "@/pages/OnboardingPage";
+import { VenueProvider } from "@/contexts/VenueContext";
+import { AuthProvider } from "@/contexts/AuthContext";
+import ProfilePage from "./pages/ProfilePage";
 // Firebase is initialized in services/firebase.ts
-import '@/services/firebase'
+import "@/services/firebase";
 
 function App() {
   return (
@@ -22,7 +23,7 @@ function App() {
       <VenueProvider>
         <BrowserRouter>
           <ScrollToTop />
-          <div className="min-h-screen bg-background flex flex-col">
+          <div className="min-h-screen flex flex-col">
             <Header />
 
             <Routes>
@@ -32,7 +33,11 @@ function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/venue" element={<VenueDetailPage />} />
               <Route path="/search" element={<SearchPage />} />
-              <Route path="/bookmarks" element={<BookmarkedRestaurantsPage />} />
+              <Route path="/profile" element={<ProfilePage />} />
+              <Route
+                path="/bookmarks"
+                element={<BookmarkedRestaurantsPage />}
+              />
               <Route path="/reservations" element={<ReservationsPage />} />
             </Routes>
 
@@ -42,7 +47,7 @@ function App() {
         </BrowserRouter>
       </VenueProvider>
     </AuthProvider>
-  )
+  );
 }
 
-export default App
+export default App;

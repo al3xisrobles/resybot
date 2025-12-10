@@ -96,8 +96,8 @@ export function HomePage() {
   }, [auth.currentUser]);
 
   return (
-    <div className="min-h-screen py-16 overflow-y-auto relative">
-      <main className="container mx-auto px-4 py-4 relative">
+    <div className="h-screen py-16 overflow-y-auto relative">
+      <main className="relative">
         {/* HERO */}
         <Hero
           reservationForm={reservationForm}
@@ -105,116 +105,118 @@ export function HomePage() {
         />
 
         {/* Trending Restaurants */}
-        <section className="mt-10">
-          <div className="flex items-center gap-2">
-            <TrendingUp className="size-6 text-primary" />
-            <h2 className="text-2xl font-bold">Trending Restaurants</h2>
-          </div>
-          <p className="text-sm pb-6 pt-2 text-muted-foreground">
-            Popular restaurants climbing on Resy right now
-          </p>
-
-          {loadingTrending ? (
-            <div className="flex items-center justify-center h-[400px]">
-              <p className="text-muted-foreground">
-                Loading trending restaurants...
-              </p>
+        <div className="container mx-auto px-4 py-4">
+          <section>
+            <div className="flex items-center gap-2 z-20">
+              <TrendingUp className="size-6 text-primary" />
+              <h2 className="text-2xl font-bold">Trending Restaurants</h2>
             </div>
-          ) : trendingRestaurants.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
-              {trendingRestaurants.map((restaurant) => {
-                const hasAllReservationDetails =
-                  reservationForm.date &&
-                  reservationForm.timeSlot &&
-                  reservationForm.partySize;
+            <p className="text-sm pb-6 pt-2 text-muted-foreground">
+              Popular restaurants climbing on Resy right now
+            </p>
 
-                return (
-                  <RestaurantGridCard
-                    key={restaurant.id}
-                    id={restaurant.id}
-                    name={restaurant.name}
-                    type={restaurant.type}
-                    priceRange={restaurant.priceRange}
-                    location={[
-                      restaurant.location.neighborhood,
-                      restaurant.location.locality,
-                    ]
-                      .filter(Boolean)
-                      .join(", ")}
-                    imageUrl={restaurant.imageUrl}
-                    onClick={() => handleSelectVenue(restaurant.id)}
-                    showPlaceholder={!hasAllReservationDetails}
-                  />
-                );
-              })}
-            </div>
-          ) : (
-            <div className="flex items-center justify-center h-[400px]">
-              <div className="text-center space-y-3">
-                <Search className="size-12 text-muted-foreground mx-auto opacity-20" />
-                <p className="text-muted-foreground text-lg">
-                  No trending restaurants available
+            {loadingTrending ? (
+              <div className="flex items-center justify-center h-[400px]">
+                <p className="text-muted-foreground">
+                  Loading trending restaurants...
                 </p>
               </div>
-            </div>
-          )}
-        </section>
+            ) : trendingRestaurants.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+                {trendingRestaurants.map((restaurant) => {
+                  const hasAllReservationDetails =
+                    reservationForm.date &&
+                    reservationForm.timeSlot &&
+                    reservationForm.partySize;
 
-        {/* Top Rated Restaurants */}
-        <section className="mt-12">
-          <div className="flex items-center gap-2">
-            <Star className="size-6 text-primary" />
-            <h2 className="text-2xl font-bold">Top Rated Restaurants</h2>
-          </div>
-          <p className="text-sm pb-6 pt-2 text-muted-foreground">
-            The highest-rated restaurants on Resy right now
-          </p>
+                  return (
+                    <RestaurantGridCard
+                      key={restaurant.id}
+                      id={restaurant.id}
+                      name={restaurant.name}
+                      type={restaurant.type}
+                      priceRange={restaurant.priceRange}
+                      location={[
+                        restaurant.location.neighborhood,
+                        restaurant.location.locality,
+                      ]
+                        .filter(Boolean)
+                        .join(", ")}
+                      imageUrl={restaurant.imageUrl}
+                      onClick={() => handleSelectVenue(restaurant.id)}
+                      showPlaceholder={!hasAllReservationDetails}
+                    />
+                  );
+                })}
+              </div>
+            ) : (
+              <div className="flex items-center justify-center h-[400px]">
+                <div className="text-center space-y-3">
+                  <Search className="size-12 text-muted-foreground mx-auto opacity-20" />
+                  <p className="text-muted-foreground text-lg">
+                    No trending restaurants available
+                  </p>
+                </div>
+              </div>
+            )}
+          </section>
 
-          {loadingTopRated ? (
-            <div className="flex items-center justify-center h-[400px]">
-              <p className="text-muted-foreground">
-                Loading top-rated restaurants...
-              </p>
+          {/* Top Rated Restaurants */}
+          <section className="mt-12">
+            <div className="flex items-center gap-2">
+              <Star className="size-6 text-primary" />
+              <h2 className="text-2xl font-bold">Top Rated Restaurants</h2>
             </div>
-          ) : topRatedRestaurants.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
-              {topRatedRestaurants.map((restaurant) => {
-                const hasAllReservationDetails =
-                  reservationForm.date &&
-                  reservationForm.timeSlot &&
-                  reservationForm.partySize;
+            <p className="text-sm pb-6 pt-2 text-muted-foreground">
+              The highest-rated restaurants on Resy right now
+            </p>
 
-                return (
-                  <RestaurantGridCard
-                    key={restaurant.id}
-                    id={restaurant.id}
-                    name={restaurant.name}
-                    type={restaurant.type}
-                    priceRange={restaurant.priceRange}
-                    location={[
-                      restaurant.location.neighborhood,
-                      restaurant.location.locality,
-                    ]
-                      .filter(Boolean)
-                      .join(", ")}
-                    imageUrl={restaurant.imageUrl}
-                    onClick={() => handleSelectVenue(restaurant.id)}
-                    showPlaceholder={!hasAllReservationDetails}
-                  />
-                );
-              })}
-            </div>
-          ) : (
-            <div className="flex items-center justify-center h-[400px]">
-              <div className="text-center space-y-3">
-                <Star className="size-12 text-muted-foreground mx-auto opacity-20" />
-                <p className="text-muted-foreground text-lg">
-                  No top-rated restaurants available
+            {loadingTopRated ? (
+              <div className="flex items-center justify-center h-[400px]">
+                <p className="text-muted-foreground">
+                  Loading top-rated restaurants...
                 </p>
               </div>
-            </div>
-          )}
-        </section>
+            ) : topRatedRestaurants.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+                {topRatedRestaurants.map((restaurant) => {
+                  const hasAllReservationDetails =
+                    reservationForm.date &&
+                    reservationForm.timeSlot &&
+                    reservationForm.partySize;
+
+                  return (
+                    <RestaurantGridCard
+                      key={restaurant.id}
+                      id={restaurant.id}
+                      name={restaurant.name}
+                      type={restaurant.type}
+                      priceRange={restaurant.priceRange}
+                      location={[
+                        restaurant.location.neighborhood,
+                        restaurant.location.locality,
+                      ]
+                        .filter(Boolean)
+                        .join(", ")}
+                      imageUrl={restaurant.imageUrl}
+                      onClick={() => handleSelectVenue(restaurant.id)}
+                      showPlaceholder={!hasAllReservationDetails}
+                    />
+                  );
+                })}
+              </div>
+            ) : (
+              <div className="flex items-center justify-center h-[400px]">
+                <div className="text-center space-y-3">
+                  <Star className="size-12 text-muted-foreground mx-auto opacity-20" />
+                  <p className="text-muted-foreground text-lg">
+                    No top-rated restaurants available
+                  </p>
+                </div>
+              </div>
+            )}
+          </section>
+        </div>
       </main>
     </div>
   );

@@ -16,9 +16,14 @@ import { useAuth } from "@/contexts/AuthContext";
 interface SearchBarProps {
   className?: string;
   inputClassName?: string;
+  placeholderText?: string;
 }
 
-export function SearchBar({ className, inputClassName }: SearchBarProps) {
+export function SearchBar({
+  className,
+  inputClassName,
+  placeholderText = "e.g., Carbone, Torrisi",
+}: SearchBarProps) {
   const navigate = useNavigate();
   const { searchResults, setSearchResults, searchQuery, setSearchQuery } =
     useVenue();
@@ -147,7 +152,7 @@ export function SearchBar({ className, inputClassName }: SearchBarProps) {
       <Popover open={searchPopoverOpen} onOpenChange={setSearchPopoverOpen}>
         <PopoverTrigger asChild>
           <div
-            className={className}
+            className={`cursor-text! ${className}`}
             style={{ position: "relative", zIndex: 9997 }}
             onClick={(e) => {
               e.stopPropagation();
@@ -155,7 +160,7 @@ export function SearchBar({ className, inputClassName }: SearchBarProps) {
           >
             <Input
               ref={inputRef}
-              placeholder="e.g., Carbone, Torrisi"
+              placeholder={placeholderText}
               value={searchQuery}
               onChange={(e) => handleSearchChange(e.target.value)}
               onFocus={() => {

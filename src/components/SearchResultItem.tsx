@@ -48,7 +48,7 @@ export const SearchResultItem = React.memo(function SearchResultItem({
       onClick={() => onCardClick?.(id)}
       onMouseEnter={() => onHover?.(id)}
       onMouseLeave={() => onHover?.(null)}
-      className="w-full text-left px-4 py-3 hover:bg-accent transition-colors border-2 border-background rounded-md"
+      className="w-full text-left px-4 py-3 hover:bg-accent transition-colors rounded-md"
     >
       <div className="flex flex-row relative items-start gap-3 h-full">
         {/* Image Thumbnail */}

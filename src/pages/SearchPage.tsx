@@ -57,7 +57,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { useAuth } from "@/contexts/AuthContext";
 
-export const TIME_SLOT_OPTIONS = TIME_SLOTS.map((slot) => (
+const TIME_SLOT_OPTIONS = TIME_SLOTS.map((slot) => (
   <SelectItem key={slot.value} value={slot.value}>
     {slot.display}
   </SelectItem>
@@ -582,8 +582,7 @@ export function SearchPage() {
                           <PopoverTrigger asChild>
                             <button
                               className={cn(
-                                "flex h-9 w-full items-center justify-start rounded-md border bg-background px-3 py-2 text-sm shadow-xs ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer hover:bg-accent/50 transition-colors",
-                                !reservationForm.date && "text-muted-foreground"
+                                "flex h-9 w-full items-center justify-start rounded-md border bg-background px-3 py-2 text-sm shadow-xs ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer hover:bg-accent/50 transition-colors"
                               )}
                             >
                               {reservationForm.date ? (

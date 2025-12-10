@@ -1,7 +1,14 @@
-import { LogOut, User, Calendar, UserCircle, Bookmark, Menu } from 'lucide-react'
-import ResbotLogo from '../assets/ResbotLogo.svg';
-import { useAuth } from '@/contexts/AuthContext'
-import { Button } from './ui/button'
+import {
+  LogOut,
+  User,
+  Calendar,
+  UserCircle,
+  Bookmark,
+  Menu,
+} from "lucide-react";
+import ResbotLogo from "../assets/ResbotLogoRed.svg";
+import { useAuth } from "@/contexts/AuthContext";
+import { Button } from "./ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,33 +16,35 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
+} from "@/components/ui/dropdown-menu";
 import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
   navigationMenuTriggerStyle,
-} from '@/components/ui/navigation-menu'
-import { useNavigate, useLocation, Link } from 'react-router-dom'
-import { SearchBar } from '@/components/SearchBar'
+} from "@/components/ui/navigation-menu";
+import { useNavigate, useLocation, Link } from "react-router-dom";
+import { SearchBar } from "@/components/SearchBar";
 
 export function Header() {
-  const { currentUser, logout } = useAuth()
-  const navigate = useNavigate()
-  const location = useLocation()
+  const { currentUser, logout } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   async function handleLogout() {
     try {
-      await logout()
+      await logout();
     } catch (error) {
-      console.error('Failed to log out:', error)
+      console.error("Failed to log out:", error);
     }
   }
 
   // Hide login button on login/signup pages
-  const isAuthPage = location.pathname === '/login' || location.pathname === '/signup'
-  const isHomePage = location.pathname === '/' || location.pathname === '/search'
+  const isAuthPage =
+    location.pathname === "/login" || location.pathname === "/signup";
+  const isHomePage =
+    location.pathname === "/" || location.pathname === "/search";
 
   return (
     <header className="fixed top-0 left-0 right-0 z-9998 border-b bg-card">
@@ -47,12 +56,11 @@ export function Header() {
             {/* Left: Logo and Title - Clickable */}
             <div
               className="flex items-center gap-3 cursor-pointer"
-              onClick={() => navigate('/')}
+              onClick={() => navigate("/")}
             >
-              <img src={ResbotLogo} className='w-10'/>
+              <img src={ResbotLogo} className="w-10" />
               <div>
                 <h1 className="text-3xl font-bold text-foreground">Resbot</h1>
-                <p className="hidden xl:block text-sm text-muted-foreground">Automated NYC Restaurant Reservations</p>
               </div>
             </div>
 
@@ -62,14 +70,22 @@ export function Header() {
                 <NavigationMenuList>
                   <NavigationMenuItem>
                     <Link to="/">
-                      <NavigationMenuLink className={`${navigationMenuTriggerStyle()} ${location.pathname === '/' ? 'bg-accent' : ''}`}>
+                      <NavigationMenuLink
+                        className={`${navigationMenuTriggerStyle()} ${
+                          location.pathname === "/" ? "bg-accent" : ""
+                        }`}
+                      >
                         Home
                       </NavigationMenuLink>
                     </Link>
                   </NavigationMenuItem>
                   <NavigationMenuItem>
                     <Link to="/search">
-                      <NavigationMenuLink className={`${navigationMenuTriggerStyle()} ${location.pathname === '/search' ? 'bg-accent' : ''}`}>
+                      <NavigationMenuLink
+                        className={`${navigationMenuTriggerStyle()} ${
+                          location.pathname === "/search" ? "bg-accent" : ""
+                        }`}
+                      >
                         All Restaurants
                       </NavigationMenuLink>
                     </Link>
@@ -92,16 +108,16 @@ export function Header() {
                       {currentUser.displayName || currentUser.email}
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={() => navigate('/profile')}>
+                    <DropdownMenuItem onClick={() => navigate("/profile")}>
                       <UserCircle className="mr-2 size-4" />
                       Profile
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={() => navigate('/reservations')}>
+                    <DropdownMenuItem onClick={() => navigate("/reservations")}>
                       <Calendar className="mr-2 size-4" />
                       My Reservations
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => navigate('/bookmarks')}>
+                    <DropdownMenuItem onClick={() => navigate("/bookmarks")}>
                       <Bookmark className="mr-2 size-4" />
                       Bookmarked Restaurants
                     </DropdownMenuItem>
@@ -112,10 +128,18 @@ export function Header() {
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
-              ) : !isAuthPage && (
-                <Button onClick={() => navigate('/login')}>
-                  Log in
-                </Button>
+              ) : (
+                !isAuthPage && (
+                  <div className="flex items-center gap-2">
+                    <Button
+                      variant="outline"
+                      onClick={() => navigate("/login")}
+                    >
+                      Log in
+                    </Button>
+                    <Button onClick={() => navigate("/signup")}>Sign Up</Button>
+                  </div>
+                )
               )}
             </div>
           </div>
@@ -125,12 +149,11 @@ export function Header() {
             {/* Left: Logo and Title - Clickable */}
             <div
               className="flex items-center gap-3 cursor-pointer shrink-0"
-              onClick={() => navigate('/')}
+              onClick={() => navigate("/")}
             >
-              <img src={ResbotLogo} className='w-10'/>
+              <img src={ResbotLogo} className="w-10" />
               <div>
                 <h1 className="text-3xl font-bold text-foreground">Resbot</h1>
-                <p className="text-sm text-muted-foreground">Automated Restaurant Reservations</p>
               </div>
             </div>
 
@@ -144,14 +167,22 @@ export function Header() {
                 <NavigationMenuList>
                   <NavigationMenuItem>
                     <Link to="/">
-                      <NavigationMenuLink className={`${navigationMenuTriggerStyle()} ${location.pathname === '/' ? 'bg-accent' : ''}`}>
+                      <NavigationMenuLink
+                        className={`${navigationMenuTriggerStyle()} ${
+                          location.pathname === "/" ? "bg-accent" : ""
+                        }`}
+                      >
                         Home
                       </NavigationMenuLink>
                     </Link>
                   </NavigationMenuItem>
                   <NavigationMenuItem>
                     <Link to="/search">
-                      <NavigationMenuLink className={`${navigationMenuTriggerStyle()} ${location.pathname === '/search' ? 'bg-accent' : ''}`}>
+                      <NavigationMenuLink
+                        className={`${navigationMenuTriggerStyle()} ${
+                          location.pathname === "/search" ? "bg-accent" : ""
+                        }`}
+                      >
                         All Restaurants
                       </NavigationMenuLink>
                     </Link>
@@ -174,16 +205,16 @@ export function Header() {
                       {currentUser.displayName || currentUser.email}
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={() => navigate('/profile')}>
+                    <DropdownMenuItem onClick={() => navigate("/profile")}>
                       <UserCircle className="mr-2 size-4" />
                       Profile
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={() => navigate('/reservations')}>
+                    <DropdownMenuItem onClick={() => navigate("/reservations")}>
                       <Calendar className="mr-2 size-4" />
                       My Reservations
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => navigate('/bookmarks')}>
+                    <DropdownMenuItem onClick={() => navigate("/bookmarks")}>
                       <Bookmark className="mr-2 size-4" />
                       Bookmarked Restaurants
                     </DropdownMenuItem>
@@ -194,10 +225,18 @@ export function Header() {
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
-              ) : !isAuthPage && (
-                <Button onClick={() => navigate('/login')}>
-                  Log in
-                </Button>
+              ) : (
+                !isAuthPage && (
+                  <div className="flex items-center gap-2">
+                    <Button
+                      variant="outline"
+                      onClick={() => navigate("/login")}
+                    >
+                      Log in
+                    </Button>
+                    <Button onClick={() => navigate("/signup")}>Sign Up</Button>
+                  </div>
+                )
               )}
             </div>
           </div>
@@ -208,9 +247,9 @@ export function Header() {
           {/* Logo - Clickable */}
           <div
             className="flex items-center gap-2 cursor-pointer"
-            onClick={() => navigate('/')}
+            onClick={() => navigate("/")}
           >
-            <img src={ResbotLogo} className='w-8'/>
+            <img src={ResbotLogo} className="w-8" />
             <h1 className="text-xl font-bold text-foreground">Resbot</h1>
           </div>
 
@@ -224,17 +263,17 @@ export function Header() {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56">
-                <DropdownMenuItem onClick={() => navigate('/search')}>
+                <DropdownMenuItem onClick={() => navigate("/search")}>
                   See All Restaurants
                 </DropdownMenuItem>
                 {currentUser && (
                   <>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={() => navigate('/reservations')}>
+                    <DropdownMenuItem onClick={() => navigate("/reservations")}>
                       <Calendar className="mr-2 size-4" />
                       My Reservations
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => navigate('/bookmarks')}>
+                    <DropdownMenuItem onClick={() => navigate("/bookmarks")}>
                       <Bookmark className="mr-2 size-4" />
                       Bookmarked Restaurants
                     </DropdownMenuItem>
@@ -256,7 +295,7 @@ export function Header() {
                     {currentUser.displayName || currentUser.email}
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => navigate('/profile')}>
+                  <DropdownMenuItem onClick={() => navigate("/profile")}>
                     <UserCircle className="mr-2 size-4" />
                     Profile
                   </DropdownMenuItem>
@@ -267,10 +306,21 @@ export function Header() {
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
-            ) : !isAuthPage && (
-              <Button size="sm" onClick={() => navigate('/login')}>
-                Log in
-              </Button>
+            ) : (
+              !isAuthPage && (
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => navigate("/login")}
+                  >
+                    Log in
+                  </Button>
+                  <Button size="sm" onClick={() => navigate("/signup")}>
+                    Sign Up
+                  </Button>
+                </div>
+              )
             )}
           </div>
         </div>
@@ -278,13 +328,10 @@ export function Header() {
         {/* Mobile Search Bar (when not on home page) */}
         {!isHomePage && (
           <div className="mt-4 md:hidden">
-            <SearchBar
-              className="relative w-full"
-              inputClassName="pr-10"
-            />
+            <SearchBar className="relative w-full" inputClassName="pr-10" />
           </div>
         )}
       </div>
     </header>
-  )
+  );
 }

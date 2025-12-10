@@ -595,7 +595,7 @@ export function VenueDetailPage() {
                                 href={venueLinks.googleMaps}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-sm text-primary hover:underline cursor-pointer"
+                                className="text-sm hover:underline cursor-pointer"
                               >
                                 {venueData.address}
                               </a>
@@ -751,7 +751,7 @@ export function VenueDetailPage() {
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <Sparkles className="size-5 text-primary" />
+                    <Sparkles className="size-5" />
                     <CardTitle>Reservation Insights</CardTitle>
                   </div>
                   {aiSummary && !loadingAi && (
@@ -982,6 +982,7 @@ export function VenueDetailPage() {
                           partySize: value,
                         })
                       }
+                      disabled={!auth.currentUser}
                     >
                       <SelectTrigger id="party-size">
                         <SelectValue placeholder="Select party size" />
@@ -1004,6 +1005,7 @@ export function VenueDetailPage() {
                     <Popover>
                       <PopoverTrigger asChild>
                         <button
+                          disabled={!auth.currentUser}
                           className={cn(
                             "flex h-9 w-full items-center justify-start rounded-md border bg-background px-3 py-2 text-sm shadow-xs ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer hover:bg-accent/50 transition-colors",
                             !reservationForm.date && "text-muted-foreground"
@@ -1040,6 +1042,7 @@ export function VenueDetailPage() {
                           timeSlot: value,
                         })
                       }
+                      disabled={!auth.currentUser}
                     >
                       <SelectTrigger id="time-slot">
                         <SelectValue placeholder="Select time" />
@@ -1071,6 +1074,7 @@ export function VenueDetailPage() {
                             windowHours: value,
                           })
                         }
+                        disabled={!auth.currentUser}
                       >
                         <SelectTrigger id="window">
                           <SelectValue placeholder="Select window" />
@@ -1094,6 +1098,7 @@ export function VenueDetailPage() {
                             seatingType: value,
                           })
                         }
+                        disabled={!auth.currentUser}
                       >
                         <SelectTrigger id="seating-type">
                           <SelectValue placeholder="Any seating" />
@@ -1134,6 +1139,7 @@ export function VenueDetailPage() {
                       <Popover>
                         <PopoverTrigger asChild>
                           <button
+                            disabled={!auth.currentUser}
                             className={cn(
                               "flex h-9 w-full items-center justify-start rounded-md border bg-background px-3 py-2 text-sm shadow-xs ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer hover:bg-accent/50 transition-colors",
                               !reservationForm.dropDate &&
@@ -1177,6 +1183,7 @@ export function VenueDetailPage() {
                             dropTimeSlot: value,
                           })
                         }
+                        disabled={!auth.currentUser}
                       >
                         <SelectTrigger id="drop-time-slot">
                           <SelectValue placeholder="Select drop time" />
@@ -1225,6 +1232,7 @@ export function VenueDetailPage() {
                   size="lg"
                   onClick={handleMakeReservation}
                   disabled={
+                    !auth.currentUser ||
                     loadingSubmit ||
                     reservationScheduled ||
                     !reservationForm.date ||
