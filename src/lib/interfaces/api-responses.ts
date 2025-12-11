@@ -6,7 +6,6 @@
 import type {
   SearchResult,
   SearchPagination,
-  VenuePhotoData,
   CalendarData,
   GeminiSearchResponse,
   TrendingRestaurant,
@@ -49,7 +48,6 @@ export interface VenueLinksApiResponse {
 }
 
 // Re-export common response wrappers for convenience
-export type VenuePhotoApiResponse = ApiResponse<VenuePhotoData>;
 export type CalendarApiResponse = ApiResponse<CalendarData>;
 export type GeminiSearchApiResponse = ApiResponse<GeminiSearchResponse>;
 export type TrendingRestaurantsApiResponse = ApiResponse<TrendingRestaurant[]>;

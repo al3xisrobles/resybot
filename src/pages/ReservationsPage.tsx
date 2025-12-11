@@ -119,7 +119,7 @@ export function ReservationsPage() {
     };
 
     fetchReservations();
-  }, []);
+  }, [auth.currentUser]);
 
   const scheduledReservations = useMemo(
     () => reservations.filter((r) => r.status === "Scheduled"),
