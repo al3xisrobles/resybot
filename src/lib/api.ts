@@ -9,8 +9,6 @@ const API_ENDPOINTS = {
   search_map: `${CLOUD_FUNCTIONS_BASE}/search_map`,
   venue: `${CLOUD_FUNCTIONS_BASE}/venue`,
   venue_links: `${CLOUD_FUNCTIONS_BASE}/venue_links`,
-  venue_photo: `${CLOUD_FUNCTIONS_BASE}/venue_photo`,
-  venue_photo_proxy: `${CLOUD_FUNCTIONS_BASE}/venue_photo_proxy`,
   calendar: `${CLOUD_FUNCTIONS_BASE}/calendar`,
   reservation: `${CLOUD_FUNCTIONS_BASE}/reservation`,
   gemini_search: `${CLOUD_FUNCTIONS_BASE}/gemini_search`,
@@ -26,7 +24,6 @@ import type {
   VenueData,
   GeminiSearchResponse,
   CalendarData,
-  VenuePhotoData,
   TrendingRestaurant,
   VenueLinksResponse,
   MapSearchFilters,
@@ -235,6 +232,8 @@ export async function searchRestaurant(
 
   const result: ApiResponse<VenueData> = await response.json();
 
+  console.log("[API] searchRestaurant raw response:", result);
+
   if (!result.success || !result.data) {
     throw new Error(result.error || "Failed to fetch restaurant");
   }
@@ -304,52 +303,6 @@ export async function getCalendar(
   }
 
   return result.data;
-}
-
-/**
- * Get restaurant photo URL from Google Places
- */
-export async function getVenuePhoto(
-  userId: string,
-  venueId: string,
-  restaurantName: string
-): Promise<VenuePhotoData | null> {
-  const params = new URLSearchParams();
-  params.append("id", venueId);
-  params.append("name", restaurantName);
-  params.append("userId", userId);
-
-  const url = `${API_ENDPOINTS.venue_photo}?${params.toString()}`;
-
-  try {
-    const response = await fetch(url);
-
-    // Handle 404 gracefully - restaurant just doesn't have a photo
-    if (response.status === 404) {
-      return null;
-    }
-
-    if (!response.ok) {
-      const error = await response.json().catch(() => ({}));
-      console.warn(
-        `Failed to fetch venue photo for ${restaurantName}:`,
-        error.error || response.statusText
-      );
-      return null;
-    }
-
-    const result: ApiResponse<VenuePhotoData> = await response.json();
-
-    if (!result.success || !result.data) {
-      console.warn(`No photo data for ${restaurantName}:`, result.error);
-      return null;
-    }
-
-    return result.data;
-  } catch (error) {
-    console.warn(`Error fetching venue photo for ${restaurantName}:`, error);
-    return null;
-  }
 }
 
 /**

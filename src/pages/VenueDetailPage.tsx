@@ -48,19 +48,18 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
+  type CarouselApi, // 👈 add this
 } from "@/components/ui/carousel";
 import {
   searchRestaurant,
   getGeminiSearch,
   getCalendar,
-  getVenuePhoto,
   getVenueLinks,
 } from "@/lib/api";
 import type {
   VenueData,
   GeminiSearchResponse,
   CalendarData,
-  VenuePhotoData,
   VenueLinks,
   VenueLinksResponse,
 } from "@/lib/interfaces";
@@ -129,11 +128,11 @@ export function VenueDetailPage() {
   const [loadingCalendar, setLoadingCalendar] = useState(false);
   const [calendarError, setCalendarError] = useState<string | null>(null);
 
-  const [venuePhoto, setVenuePhoto] = useState<VenuePhotoData | null>(null);
-  const [loadingPhoto, setLoadingPhoto] = useState(false);
-
   const [venueLinks, setVenueLinks] = useState<VenueLinks | null>(null);
   const [loadingLinks, setLoadingLinks] = useState(false);
+
+  const [carouselApi, setCarouselApi] = useState<CarouselApi | null>(null);
+  const [currentSlide, setCurrentSlide] = useState(0);
 
   const [loadingSubmit, setLoadingSubmit] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -142,6 +141,22 @@ export function VenueDetailPage() {
   const [isBookmarked, setIsBookmarked] = useState(false);
 
   const [reserveOnEmulation, setReserveOnEmulation] = useState(false);
+
+  useEffect(() => {
+    if (!carouselApi) return;
+
+    const onSelect = () => {
+      setCurrentSlide(carouselApi.selectedScrollSnap());
+    };
+
+    // initial
+    onSelect();
+
+    carouselApi.on("select", onSelect);
+    return () => {
+      carouselApi.off("select", onSelect);
+    };
+  }, [carouselApi]);
 
   // Fetch venue data
   useEffect(() => {
@@ -156,6 +171,9 @@ export function VenueDetailPage() {
         setLoadingVenue(true);
         const user = auth.currentUser;
         const data = await searchRestaurant(user!.uid, venueId);
+
+        console.log("[VenueDetailPage] Fetched venue data:", data);
+
         setVenueData(data);
       } catch (err) {
         setVenueError(
@@ -267,31 +285,6 @@ export function VenueDetailPage() {
     fetchCalendarData();
   }, [venueId, reservationForm.partySize, auth.currentUser]);
 
-  // Fetch venue photo when venue data is loaded
-  useEffect(() => {
-    if (!venueData?.name || !venueId) return;
-
-    const fetchVenuePhoto = async () => {
-      try {
-        setLoadingPhoto(true);
-        const user = auth.currentUser;
-        const photoData = await getVenuePhoto(
-          user!.uid,
-          venueId,
-          venueData.name
-        );
-        setVenuePhoto(photoData);
-      } catch (err) {
-        // Silently fail - photo is optional
-        console.error("Failed to load venue photo:", err);
-      } finally {
-        setLoadingPhoto(false);
-      }
-    };
-
-    fetchVenuePhoto();
-  }, [auth.currentUser, venueData?.name, venueId]);
-
   // Fetch venue links (Google Maps, Resy) and venue data
   useEffect(() => {
     if (!venueId) return;
@@ -334,6 +327,7 @@ export function VenueDetailPage() {
               neighborhood: cachedData.neighborhood || "",
               price_range: cachedData.priceRange || 0,
               rating: cachedData.rating || null,
+              photoUrls: cachedData.photoUrls || [],
             });
             setLoadingVenue(false);
           }
@@ -364,6 +358,7 @@ export function VenueDetailPage() {
             neighborhood: response.venueData.neighborhood,
             priceRange: response.venueData.priceRange,
             rating: response.venueData.rating,
+            photoUrls: venueData!.photoUrls || undefined,
           });
           console.log(
             "[VenueDetailPage] ✓ Saved venue links and data to Firebase cache"
@@ -371,6 +366,10 @@ export function VenueDetailPage() {
 
           // Also update venue data if we haven't loaded it yet
           if (!venueData) {
+            console.log(
+              "[VenueDetailPage] ✓ Setting venue data from links response"
+            );
+
             setVenueData({
               name: response.venueData.name,
               venue_id: venueId,
@@ -379,6 +378,7 @@ export function VenueDetailPage() {
               neighborhood: response.venueData.neighborhood,
               price_range: response.venueData.priceRange,
               rating: response.venueData.rating,
+              photoUrls: venueData!.photoUrls || [],
             });
             setLoadingVenue(false);
           }
@@ -512,7 +512,7 @@ export function VenueDetailPage() {
   }
 
   return (
-    <div className="h-screen bg-background py-20 overflow-y-auto">
+    <div className="h-screen bg-background overflow-y-auto">
       {/* Main Content */}
       <main className="container mx-auto px-4 pb-8 pt-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -911,22 +911,24 @@ export function VenueDetailPage() {
 
           {/* Right Side - Make Reservation */}
           <div>
-            {/* Restaurant Photos Carousel */}
-            {venuePhoto &&
-              venuePhoto.photoUrls &&
-              venuePhoto.photoUrls.length > 0 &&
-              !loadingPhoto && (
-                <div className="mb-6">
-                  <Carousel className="w-full">
-                    <CarouselContent>
-                      {venuePhoto.photoUrls.map((photoUrl, index) => (
+            {/* Restaurant Photos Carousel - uses photoUrls directly from venue data */}
+            {venueData?.photoUrls && venueData.photoUrls.length > 0 && (
+              <div className="mb-6 relative rounded-lg overflow-hidden">
+                <Carousel
+                  className="w-full z-9 rounded-lg overflow-hidden"
+                  setApi={setCarouselApi}
+                  opts={{ loop: true }}
+                >
+                  <CarouselContent>
+                    {venueData.photoUrls.map(
+                      (photoUrl: string, index: number) => (
                         <CarouselItem key={index}>
                           <div className="rounded-lg overflow-hidden border shadow-sm">
                             <img
                               src={photoUrl}
-                              alt={`${
-                                venueData?.name || "Restaurant"
-                              } - Photo ${index + 1}`}
+                              alt={`${venueData.name || "Restaurant"} - Photo ${
+                                index + 1
+                              }`}
                               className="w-full h-auto max-w-full object-cover pointer-events-none select-none"
                               style={{ maxHeight: "400px" }}
                               onError={(e) => {
@@ -936,15 +938,32 @@ export function VenueDetailPage() {
                             />
                           </div>
                         </CarouselItem>
-                      ))}
-                    </CarouselContent>
-                    <CarouselPrevious className="left-2" />
-                    <CarouselNext className="right-2" />
-                  </Carousel>
-                </div>
-              )}
+                      )
+                    )}
+                  </CarouselContent>
+                  <CarouselPrevious className="left-2" />
+                  <CarouselNext className="right-2" />
+                </Carousel>
 
-            {loadingPhoto && (
+                <div className="absolute left-1/2 bottom-3 -translate-x-1/2 z-10">
+                  <div className="flex items-center gap-2 rounded-full bg-background px-3 py-1 shadow-sm">
+                    {venueData.photoUrls.map((_, index: number) => (
+                      <button
+                        key={index}
+                        type="button"
+                        onClick={() => carouselApi?.scrollTo(index)}
+                        className={cn(
+                          "h-2 w-2 rounded-full transition",
+                          currentSlide === index ? "bg-black" : "bg-gray-400"
+                        )}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {loadingVenue && !venueData && (
               <div
                 className="mb-6 rounded-lg border shadow-sm bg-muted flex items-center justify-center"
                 style={{ height: "400px" }}

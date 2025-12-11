@@ -84,14 +84,13 @@ export function OnboardingPage() {
         description: errorMessage,
         icon: <AlertCircle className="h-5 w-5 text-red-500" />,
       });
-    } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="h-screen flex justify-center bg-background px-4 py-10 overflow-y-auto">
-      <Card className="w-full max-w-md my-32 h-max">
+    <div className="h-screen flex justify-center bg-background px-4 overflow-y-auto">
+      <Card className="w-full max-w-md my-16 h-max">
         <CardHeader>
           <img src={ResyLogo} alt="Resy Logo" className="h-12 mb-4" />
           <CardTitle>Connect Your Resy Account</CardTitle>

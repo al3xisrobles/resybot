@@ -14,6 +14,7 @@ export interface VenueData {
   neighborhood: string;
   price_range: number;
   rating: number | null;
+  photoUrls: string[]; // List of photo URLs from Resy API
 }
 
 /**
@@ -139,16 +140,6 @@ export interface SearchPagination {
 export interface SearchResponse {
   results: SearchResult[];
   pagination: SearchPagination;
-}
-
-/**
- * Venue photo data model
- */
-export interface VenuePhotoData {
-  photoUrl: string; // For backwards compatibility
-  photoUrls: string[]; // Array of photo URLs
-  placeName: string;
-  placeAddress: string;
 }
 
 /**

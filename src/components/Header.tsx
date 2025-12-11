@@ -171,8 +171,8 @@ export function Header() {
             {/* Center: Search Bar and Navigation Menu */}
             <div className="flex items-center gap-8 flex-1 justify-center">
               <SearchBar
-                className="relative w-full max-w-md"
-                inputClassName="pr-10 py-6"
+                className="relative w-full max-w-md rounded-full border bg-background"
+                inputClassName="h-12 sm:h-14 pl-6 pr-12 rounded-full text-sm sm:text-base"
               />
               <NavigationMenu>
                 <NavigationMenuList>

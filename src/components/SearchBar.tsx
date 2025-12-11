@@ -80,8 +80,6 @@ export function SearchBar({
           return; // Ignore results from old queries
         }
 
-        console.log("Search results fetched:", results);
-
         // Don't fetch photos here - images will load lazily from the imageUrl
         // that's already in the search results from the backend
         setSearchResults(results);
@@ -139,11 +137,11 @@ export function SearchBar({
 
   return (
     <>
-      {/* Backdrop overlay when searching */}
+      {/* Backdrop overlay when searching - z-index must be above header (9998) and footer (999) */}
       {searchPopoverOpen && (
         <div
           className="fixed inset-0 bg-black/50"
-          style={{ zIndex: 999 }}
+          style={{ zIndex: 10000 }}
           onClick={() => {
             setSearchPopoverOpen(false);
             setInputFocused(false);
@@ -155,7 +153,7 @@ export function SearchBar({
         <PopoverTrigger asChild>
           <div
             className={`cursor-text! ${className}`}
-            style={{ position: "relative", zIndex: 9997 }}
+            style={{ position: "relative", zIndex: 10001 }}
             onClick={(e) => {
               e.stopPropagation();
             }}
@@ -167,9 +165,7 @@ export function SearchBar({
               onChange={(e) => handleSearchChange(e.target.value)}
               onFocus={() => {
                 setInputFocused(true);
-                if (searchQuery.trim() || searchResults.length > 0) {
-                  setSearchPopoverOpen(true);
-                }
+                setSearchPopoverOpen(true);
               }}
               onBlur={() => {
                 setTimeout(() => {
@@ -190,7 +186,7 @@ export function SearchBar({
         </PopoverTrigger>
         <PopoverContent
           className="w-(--radix-popover-trigger-width) p-0"
-          style={{ zIndex: 9998 }}
+          style={{ zIndex: 10002 }}
           align="start"
           onOpenAutoFocus={(e) => e.preventDefault()}
         >
@@ -199,8 +195,8 @@ export function SearchBar({
               Loading results...
             </div>
           ) : searchResults.length > 0 ? (
-            <div className="max-h-[400px] overflow-y-auto">
-              {searchResults.slice(0, 5).map((result) => (
+            <div className="max-h-[500px] overflow-y-auto">
+              {searchResults.slice(0, 8).map((result) => (
                 <SearchResultItem
                   key={result.id}
                   id={result.id}
@@ -220,7 +216,7 @@ export function SearchBar({
                   imageSize="small"
                 />
               ))}
-              {searchResults.length > 5 && (
+              {searchResults.length > 8 && (
                 <div className="p-2 border-t">
                   <Button
                     variant="ghost"

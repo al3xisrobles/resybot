@@ -26,22 +26,20 @@ function App() {
           <div className="h-screen flex flex-col overflow-hidden">
             <Header />
 
-            <main className="flex-1 min-h-0 flex flex-col overflow-hidden">
-              <Routes>
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/signup" element={<SignupPage />} />
-                <Route path="/onboarding" element={<OnboardingPage />} />
-                <Route path="/" element={<HomePage />} />
-                <Route path="/venue" element={<VenueDetailPage />} />
-                <Route path="/search" element={<SearchPage />} />
-                <Route path="/profile" element={<ProfilePage />} />
-                <Route
-                  path="/bookmarks"
-                  element={<BookmarkedRestaurantsPage />}
-                />
-                <Route path="/reservations" element={<ReservationsPage />} />
-              </Routes>
-            </main>
+            <Routes>
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/signup" element={<SignupPage />} />
+              <Route path="/onboarding" element={<OnboardingPage />} />
+              <Route path="/" element={<HomePage />} />
+              <Route path="/venue" element={<VenueDetailPage />} />
+              <Route path="/search" element={<SearchPage />} />
+              <Route path="/profile" element={<ProfilePage />} />
+              <Route
+                path="/bookmarks"
+                element={<BookmarkedRestaurantsPage />}
+              />
+              <Route path="/reservations" element={<ReservationsPage />} />
+            </Routes>
 
             {window.location.pathname !== "/search" && <Footer />}
           </div>
